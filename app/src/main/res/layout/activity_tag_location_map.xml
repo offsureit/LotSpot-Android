@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".mvp.activity.TagLocationMapActivity">
+
+    <include
+            android:id="@+id/clToolbar"
+            layout="@layout/layout_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+            android:id="@+id/viewShadow"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_4sdp"
+            android:background="@drawable/drawable_shadow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <fragment
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/map"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clToolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <include
+            android:id="@+id/clBottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_6sdp"
+            layout="@layout/item_tag_location_map"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/clDistance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/clBottom"
+            app:layout_constraintEnd_toEndOf="@id/clBottom"
+            app:layout_constraintBottom_toTopOf="@id/clBottom">
+
+        <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/_3sdp"
+                android:textSize="@dimen/_12ssp"
+                android:text="@string/text_distance"
+                android:textColor="@color/colorText"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tvDistanceValue"
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/_3sdp"
+                android:textSize="@dimen/_12ssp"
+                android:text="@string/distance"
+                android:textColor="@color/colorText"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintStart_toEndOf="@id/tvDistance"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
+
+
+

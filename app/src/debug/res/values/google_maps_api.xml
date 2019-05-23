@@ -1,0 +1,26 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=CB:26:3A:BD:46:86:BB:40:81:48:FF:3F:7C:0F:B6:C7:36:67:3F:DC%3Bcom.oit.lotspot.mvp.activity
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    CB:26:3A:BD:46:86:BB:40:81:48:FF:3F:7C:0F:B6:C7:36:67:3F:DC
+
+    SHA-1 certificate fingerprint:
+    CB:26:3A:BD:46:86:BB:40:81:48:FF:3F:7C:0F:B6:C7:36:67:3F:DC
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyB0dpPJ0l93ZtfRVey5adapQXiRjUHU1mQ
+    </string>
+</resources>

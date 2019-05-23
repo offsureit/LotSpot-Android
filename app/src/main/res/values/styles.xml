@@ -1,0 +1,73 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemeWhite" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!--Style Button Dark green -->
+    <style name="ButtonStyle" parent="AppTheme">
+        <item name="android:layout_height">@dimen/_40sdp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/_16ssp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@drawable/background_button</item>
+        <item name="android:layout_marginStart">@dimen/_13sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_13sdp</item>
+    </style>
+
+    <!-- Style Spinner-->
+    <style parent="@android:style/Widget.Spinner" name="SpinnerwithNoArrow">
+        <item name="android:background">@android:drawable/edit_text</item>
+        <item name="android:textSize">@dimen/_15sdp</item>
+        <item name="android:text">@string/text_country_code</item>
+        <item name="android:textColor">@color/colorSpinnerText</item>
+    </style>
+
+    <!--Button Number-->
+    <style name="ButtonNumber" parent="AppTheme">
+        <item name="android:background">@drawable/background_number</item>
+        <item name="android:layout_width">@dimen/_56sdp</item>
+        <item name="android:layout_height">@dimen/_56sdp</item>
+        <item name="android:textSize">@dimen/_19sdp</item>
+        <item name="android:textColor">@color/colorBlue_Dark</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <!-- Alert Dialog -->
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/colorBlack</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:excludeFromRecents">true</item>
+    </style>
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <!-- Search View -->
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:textSize">15sp</item>
+        <item name="queryHint">@string/text_hint_vin_search</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textColorHint">@color/colorHint</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+</resources>

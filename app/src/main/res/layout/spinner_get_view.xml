@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/tvCountryCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="dfjslkf"
+            android:fontFamily="@font/roboto_regular"
+            android:textAlignment="inherit"
+            android:textColor="@color/colorSpinnerText"
+            android:textSize="@dimen/_12ssp"/>
+
+    <TextView
+            android:id="@+id/tvCountryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/tvCountryCode"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:fontFamily="@font/roboto_regular"
+            android:textAlignment="inherit"
+            android:textColor="@color/colorSpinnerText"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"/>
+
+
+</RelativeLayout>

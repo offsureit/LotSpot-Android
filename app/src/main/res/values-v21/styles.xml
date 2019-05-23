@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppThemeWhite" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+    <style name="ButtonNumber" parent="AppTheme">
+        <item name="android:background">@drawable/background_number</item>
+        <item name="android:layout_width">@dimen/_56sdp</item>
+        <item name="android:layout_height">@dimen/_56sdp</item>
+        <item name="android:textSize">@dimen/_19sdp</item>
+        <item name="android:textColor">@color/colorBlue_Dark</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+</resources>

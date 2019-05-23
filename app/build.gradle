@@ -1,0 +1,101 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.oit.lotspot"
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    /**
+     * dimensions
+     */
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+    /**
+     * Recycler view
+     */
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    /**
+     * Rounded or Curve image corners
+     */
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    /**
+     * card view
+     */
+    implementation 'com.android.support:cardview-v7:28.0.0'
+
+    /**
+     * Country code with flag
+     */
+    implementation 'com.hbb20:ccp:2.2.9'
+
+    /**
+     * Scan bar code
+     */
+    implementation 'com.edwardvanraak:MaterialBarcodeScanner:0.0.6-ALPHA'
+
+    /**
+     * Swipe Layout right
+     */
+    implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
+
+    //Crashlytics
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
+
+    // Play services
+    implementation 'com.google.android.gms:play-services-base:16.1.0'
+    implementation 'com.google.android.gms:play-services-vision:17.0.2'
+
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
+    // retrofit, gson
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    /**
+     * For firebase
+     */
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+
+    // For Image loading
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+repositories {
+    mavenCentral()
+}
+apply plugin: 'com.google.gms.google-services'
