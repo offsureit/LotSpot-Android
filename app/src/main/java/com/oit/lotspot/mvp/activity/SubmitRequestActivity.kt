@@ -22,8 +22,10 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit_request)
+
         initUi()
         initPresenter()
+
         setTextWatcher()
         clickListener()
     }
@@ -33,6 +35,9 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
         tvTitle.text = getString(R.string.title_submit_request)
     }
 
+    /**
+     * Initialization of Presenter
+     */
     private fun initPresenter() {
         presenter = SubmitRequestPresenter(this)
     }
@@ -73,7 +78,11 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
         presenter.apiPostToSubmitRequest(adminRequestModel)
     }
 
-
+    /**
+     * when successful response or data retrieved from api submit request to admin
+     *
+     * @param response successful response from api
+     */
     override fun onSuccess(responseModel: SaveVehicleDetailResponseModel) {
         hideProgressDialog()
         showToast(responseModel.message!!)
@@ -81,6 +90,11 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
         finish()
     }
 
+    /**
+     * When error occurred in getting successful response of api submit request to admin
+     *
+     * @param errorResponse for Error message
+     */
     override fun onFailure(errorResponse: ErrorResponse) {
         hideProgressDialog()
         showToast("Failure..")

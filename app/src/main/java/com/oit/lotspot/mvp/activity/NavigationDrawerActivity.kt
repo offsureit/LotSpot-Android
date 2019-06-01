@@ -37,6 +37,9 @@ open class NavigationDrawerActivity : BaseActivity(), NavigationPresenter.Respon
         rootLayout.layoutParams.width = (resources.displayMetrics.widthPixels / 1.45).toInt()
     }
 
+    /**
+     * Initialization of presenter
+     */
     private fun initPresenter() {
         presenter = NavigationPresenter(this)
     }
@@ -90,6 +93,9 @@ open class NavigationDrawerActivity : BaseActivity(), NavigationPresenter.Respon
         })
     }
 
+    /**
+     * Call for Api logout
+     */
     private fun clickedForLogout() {
         showProgressView()
         val authToken = getAuthToken()

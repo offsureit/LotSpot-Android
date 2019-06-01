@@ -276,7 +276,6 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
     /**
      * set scanned vin number in view
      */
-
     private fun setScannedVinNumber(vinNumber: String?) {
         this.vinNumber = vinNumber!!
         val arrayList = DatabaseHelper(this).getVehicleDetail()

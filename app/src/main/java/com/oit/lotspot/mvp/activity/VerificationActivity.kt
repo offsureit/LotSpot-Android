@@ -223,9 +223,6 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
         }
     }
 
-    /**
-     *
-     */
     private fun setAutoDetectOtp() {
         enteredOtpStringBuilder!!.append(verificationCode)
 
