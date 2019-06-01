@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.oit.lotspot.database.DatabaseHelper
 import com.oit.lotspot.mvp.dialog.InternetDialog
 import com.oit.lotspot.receiver.ConnectionReceiver
 import com.oit.lotspot.retrofit.response.ErrorResponse
@@ -40,6 +41,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
     private var latLngBounds: LatLngBounds.Builder? = null
     private var context = this
     private var isInternetConnected: Boolean? = null
+    var databaseHelper = DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

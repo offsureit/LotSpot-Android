@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class TagLocationActivity : BaseActivity() {
 
-    private var vehicleDetailResponseModel = VehicleDetailResponseModel.VehicleDetailFirstResponseModel()
+    private var vehicleDetailResponseModel = VehicleDetailResponseModel.VehicleDetailDataResponseModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,30 +31,28 @@ class TagLocationActivity : BaseActivity() {
     private fun getIntentData() {
         when (intent.hasExtra(Constants.App.Bundle_Key.TAG_LOCATION)) {
             true -> {
-
                 vehicleDetailResponseModel =
-                    Gson().fromJson<VehicleDetailResponseModel.VehicleDetailFirstResponseModel>(
+                    Gson().fromJson<VehicleDetailResponseModel.VehicleDetailDataResponseModel>(
                         intent.getStringExtra(Constants.App.Bundle_Key.TAG_LOCATION),
-                        VehicleDetailResponseModel.VehicleDetailFirstResponseModel::class.java
+                        VehicleDetailResponseModel.VehicleDetailDataResponseModel::class.java
                     )
-
-                setIntentDataInViews()
+                    setIntentDataInViews()
             }
         }
     }
 
     private fun setIntentDataInViews() {
-        etVin.setText(vehicleDetailResponseModel.data.vin)
+        etVin.setText(vehicleDetailResponseModel.vin)
         etModel.setText(
             getString(
                 R.string.text_car_model,
-                vehicleDetailResponseModel.data.year.toString(),
-                vehicleDetailResponseModel.data.make,
-                vehicleDetailResponseModel.data.model
+                vehicleDetailResponseModel.year.toString(),
+                vehicleDetailResponseModel.make,
+                vehicleDetailResponseModel.model
             )
         )
 
-        Picasso.get().load(vehicleDetailResponseModel.data.image).placeholder(R.drawable.place_holder).into(ivVehicle)
+        Picasso.get().load(vehicleDetailResponseModel.image).placeholder(R.drawable.place_holder).into(ivVehicle)
     }
 
     /**
@@ -74,7 +72,7 @@ class TagLocationActivity : BaseActivity() {
                     Intent(this, TagLocationMapActivity::class.java)
                         .putExtra(
                             Constants.App.Bundle_Key.TAG_LOCATION_MAP,
-                            Gson().toJson(vehicleDetailResponseModel.data)
+                            Gson().toJson(vehicleDetailResponseModel)
                         ).putExtra(Constants.App.Bundle_Key.IS_FROM_TAG_LOCATION, false)
                 )
             }

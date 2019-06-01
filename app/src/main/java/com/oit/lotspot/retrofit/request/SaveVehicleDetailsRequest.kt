@@ -1,7 +1,6 @@
 package com.oit.lotspot.retrofit.request
 
 class SaveVehicleDetailsRequest {
-
     var vin = ""
     var year = 0
     var make = ""

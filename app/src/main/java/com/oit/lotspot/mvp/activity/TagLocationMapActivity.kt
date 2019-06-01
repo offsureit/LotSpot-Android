@@ -10,7 +10,6 @@ import android.location.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -25,6 +24,7 @@ import com.google.gson.Gson
 import com.oit.lotspot.R
 import com.oit.lotspot.constants.Constants
 import com.oit.lotspot.constants.TrackingConst
+import com.oit.lotspot.database.DatabaseHelper
 import com.oit.lotspot.database.SharedPreferencesManager
 import com.oit.lotspot.mvp.presenter.TagLocationMapPresenter
 import com.oit.lotspot.retrofit.request.SaveVehicleDetailsRequest
@@ -325,11 +325,11 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         if (distance <= 1609.0) {
             distanceInMeters = (distanceInMeters * 1.094)
             distanceInMeters = java.lang.Double.parseDouble(decim.format(distanceInMeters))
-            tvDistanceValue.text = distanceInMeters.toString() + " Yard"
+            tvDistanceValue.text = "$distanceInMeters Yard"
         } else {
             distanceInMeters /= 1609.344
             distanceInMeters = java.lang.Double.parseDouble(decim.format(distanceInMeters))
-            tvDistanceValue.text = distanceInMeters.toString() + " Mi"
+            tvDistanceValue.text = "$distanceInMeters Mi"
         }
 
     }
@@ -414,7 +414,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     private fun showAlertForSubscription() {
         val alertDialog = AlertDialog.Builder(this, R.style.MyDialogTheme)
         alertDialog.setMessage(getString(R.string.subscription_msg))
-        alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog,_ ->
+        alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
             dialog.dismiss()
         }
         alertDialog.setPositiveButton(getString(R.string.text_buy)) { dialog, _ ->

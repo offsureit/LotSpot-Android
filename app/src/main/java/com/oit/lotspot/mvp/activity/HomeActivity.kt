@@ -32,6 +32,8 @@ import kotlinx.android.synthetic.main.activity_navigation_drawer.*
 import kotlinx.android.synthetic.main.layout_home.*
 import android.content.DialogInterface
 import android.graphics.Color
+import android.provider.ContactsContract
+import com.oit.lotspot.database.DatabaseHelper
 
 
 class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack {
@@ -39,6 +41,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
     private var TAG = HomeActivity::class.java.simpleName
     private var barcodeResult: Barcode? = null
     private lateinit var presenter: HomePresenter
+    private var vinNumber = ""
     private var vehicleDetailRequest = VehicleDetailRequest()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +94,6 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 R.id.ivBtnSearch -> {
                     if (validateData()) {
                         updateVinNumber(etVinNumber.text.toString())
-                        hitApiToGetVehicleDetails()
                     }
                 }
             }
@@ -242,7 +244,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 barcodeResult = barcode
 
                 updateVinNumber(barcode.rawValue)
-                setScannedVinNumber(barcode.rawValue)
+               // setScannedVinNumber(barcode.rawValue)
 
             }
             .build()
@@ -253,19 +255,23 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
      * update vin number in request model for api
      */
     private fun updateVinNumber(vinNumber: String) {
+        this.vinNumber = vinNumber
         vehicleDetailRequest.apply {
             vin = vinNumber
         }
+        setScannedVinNumber(vinNumber)
     }
 
     private fun checkForUserSubScription(response: VehicleDetailResponseModel.VehicleDetailFirstResponseModel) {
         val subscription = checkForSubscription()
-        if (subscription)
-            startActivity(
-                Intent(this, TagLocationActivity::class.java)
-                    .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response))
-            )
-        else showAlertForSubscription()
+        //  if (subscription){
+        startActivity(
+            Intent(this, TagLocationActivity::class.java)
+                .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
+        )
+        DatabaseHelper(this).saveVehicleRecords(response.data)
+//        }
+//        else showAlertForSubscription()
     }
 
     /**
@@ -273,16 +279,29 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
      */
 
     private fun setScannedVinNumber(vinNumber: String?) {
-        etVinNumber.setText(vinNumber.toString())
-        Handler().postDelayed({
-            hitApiToGetVehicleDetails()
-        }, 600)
+        this.vinNumber = vinNumber!!
+        val arrayList = DatabaseHelper(this).getVehicleDetail()
+        val index = arrayList.firstOrNull { it.vin == vinNumber }?.let {
+            arrayList.indexOf(it)
+        } ?: -1
+        if (index > -1) {
+            startActivity(
+                Intent(this, TagLocationActivity::class.java)
+                    .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(arrayList[index]))
+            )
+        } else {
+            Handler().postDelayed({
+                Log.d(TAG, " Api hit for Get details postDelayed")
+                hitApiToGetVehicleDetails()
+            }, 600)
+        }
     }
 
     /**
      * Call for api to get vehicle details from vin number
      */
     private fun hitApiToGetVehicleDetails() {
+        Log.d(TAG, " Api hit for Get details")
         showProgressView()
         val authToken = getAuthToken()
         presenter.apiGetForVehicleDetails(authToken, vehicleDetailRequest)
