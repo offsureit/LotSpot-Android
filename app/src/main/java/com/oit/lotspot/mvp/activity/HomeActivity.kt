@@ -244,7 +244,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 barcodeResult = barcode
 
                 updateVinNumber(barcode.rawValue)
-               // setScannedVinNumber(barcode.rawValue)
+                // setScannedVinNumber(barcode.rawValue)
 
             }
             .build()
@@ -264,14 +264,13 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
 
     private fun checkForUserSubScription(response: VehicleDetailResponseModel.VehicleDetailFirstResponseModel) {
         val subscription = checkForSubscription()
-        //  if (subscription){
-        startActivity(
-            Intent(this, TagLocationActivity::class.java)
-                .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
-        )
-        DatabaseHelper(this).saveVehicleRecords(response.data)
-//        }
-//        else showAlertForSubscription()
+        if (subscription) {
+            startActivity(
+                Intent(this, TagLocationActivity::class.java)
+                    .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
+            )
+            DatabaseHelper(this).saveVehicleRecords(response.data)
+        } else showAlertForSubscription()
     }
 
     /**

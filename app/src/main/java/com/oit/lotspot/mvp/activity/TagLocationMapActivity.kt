@@ -27,6 +27,7 @@ import com.oit.lotspot.constants.TrackingConst
 import com.oit.lotspot.database.DatabaseHelper
 import com.oit.lotspot.database.SharedPreferencesManager
 import com.oit.lotspot.mvp.presenter.TagLocationMapPresenter
+import com.oit.lotspot.retrofit.ApiClient
 import com.oit.lotspot.retrofit.request.SaveVehicleDetailsRequest
 import com.oit.lotspot.retrofit.response.ErrorResponse
 import com.oit.lotspot.retrofit.response.SaveVehicleDetailResponseModel
@@ -331,7 +332,6 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
             distanceInMeters = java.lang.Double.parseDouble(decim.format(distanceInMeters))
             tvDistanceValue.text = "$distanceInMeters Mi"
         }
-
     }
 
     /**
@@ -420,6 +420,24 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         alertDialog.setPositiveButton(getString(R.string.text_buy)) { dialog, _ ->
             dialog.dismiss()
             finish()
+        }
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+    }
+
+    /**
+     * show alert on failure if subscription is expired
+     */
+    private fun showAlertSubscriptionExpired(message: String) {
+        val alertDialog = AlertDialog.Builder(this, R.style.MyDialogTheme)
+        alertDialog.setTitle(getString(R.string.text_alert))
+        alertDialog.setMessage(message)
+        alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
+            dialog.dismiss()
+        }
+        alertDialog.setPositiveButton(getString(R.string.text_renew)) { dialog, _ ->
+            dialog.dismiss()
+            openWebPage(ApiClient.BASE_URL_LINKS + Constants.App.Api.PROFILE)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
@@ -636,7 +654,9 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
      */
     override fun onFailure(errorResponse: ErrorResponse) {
         hideProgressDialog()
-        responseFailure(errorResponse)
+        if (errorResponse.error.status_code == 429) {
+            showAlertSubscriptionExpired(errorResponse.error.message)
+        } else responseFailure(errorResponse)
     }
 
     override fun onLocationChanged(location: Location?) {

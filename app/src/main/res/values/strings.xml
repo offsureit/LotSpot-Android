@@ -80,7 +80,9 @@
         <xliff:g>%4$s</xliff:g>
     </string>
     <string name="text_me">Me</string>
-    <string name="format_distance"><xliff:g id="view">%1$s</xliff:g></string>
+    <string name="format_distance">
+        <xliff:g id="view">%1$s</xliff:g>
+    </string>
 
     <!-- Navigation Drawer -->
     <string name="text_history">History</string>
@@ -89,7 +91,7 @@
     <string name="text_logout">Logout</string>
     <string name="text_logout_alert">Are you sure you want to logout?</string>
 
-    <!-- Dialogs -->
+    <!-- Dialogs Button text -->
     <string name="text_alert">Alert</string>
     <string name="text_btn_scan">Scan</string>
     <string name="text_sign_up">Signup</string>
@@ -100,16 +102,26 @@
     <string name="text_no">No</string>
     <string name="text_settings">Settings</string>
     <string name="text_buy">Buy</string>
+    <string name="text_renew">Renew</string>
+    <string name="request_admin">Request Admin</string>
 
     <string name="text_access_permission_msg">These Permissions are necessary for App</string>
     <string name="dialog_title">Scan Code Result</string>
-    <string name="text_long_press_msg">Long press on Map to Tag Vehicle location </string>
+    <string name="text_long_press_msg">Long press on Map to Tag Vehicle location</string>
     <string name="text_don_show_again">Don\'t show again</string>
-    <string name="subscription_msg">Your subscription has been expired. Please purchase subscription for continuing parking.</string>
+    <string name="subscription_msg">Your subscription has been expired. Please purchase subscription for continuing
+        parking.
+    </string>
 
     <!-- Tag Location Map -->
     <string name="text_save">Save</string>
     <string name="title_activity_maps">Map</string>
 
+    <!-- Submit Request -->
+    <string name="text_subject">Subject:</string>
+    <string name="text_note">Note:</string>
+    <string name="text_subject_hint">text..</string>
+    <string name="submit">Submit</string>
+    <string name="title_submit_request">Submit Request</string>
 
 </resources>

@@ -21,6 +21,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Build
 import android.view.MotionEvent
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -104,6 +105,10 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
             price.setScale(Constants.Number.TWO, BigDecimal.ROUND_HALF_EVEN).toString()
         )
 
+    internal fun openWebPage(url: String) =
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+
+
     /**
      * show alert dialog
      */
@@ -121,7 +126,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
      * Here is call to show alert when session of user is expire,
      * Profile is blocked
      */
-    private fun showAlertForSession(message: String) {
+    private fun showAlertForProfileBlocked(message: String) {
         val alertDialog = android.support.v7.app.AlertDialog.Builder(
             this@BaseActivity, R.style.MyDialogTheme
         )
@@ -129,9 +134,13 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
         alertDialog.setTitle(getString(R.string.text_alert))
         alertDialog.setMessage(message)
         // On pressing dialog button
-        alertDialog.setPositiveButton(getString(R.string.text_ok)) { dialog, _ ->
+        alertDialog.setPositiveButton(getString(R.string.request_admin)) { dialog, _ ->
             dialog.cancel()
-            startActivity(Intent(this@BaseActivity, LoginActivity::class.java))
+            startActivity(Intent(this@BaseActivity, SubmitRequestActivity::class.java))
+        }
+        alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
+            dialog.cancel()
+            finish()
         }
         alertDialog.setCancelable(false)
         alertDialog.show()
@@ -214,8 +223,8 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
                     (context as VerificationActivity).showAlertForSignUp(errorResponse.error.errors.contact!![0])
             }
             401 -> {
-                clearToken()
-                showAlertForSession(errorResponse.error.message)
+//                clearToken()
+                showAlertForProfileBlocked(errorResponse.error.message)
             }
             else -> {
                 if (errorResponse.error.message.isNotEmpty())

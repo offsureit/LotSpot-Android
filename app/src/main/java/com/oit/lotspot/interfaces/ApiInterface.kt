@@ -1,5 +1,6 @@
 package com.oit.lotspot.interfaces
 
+import com.oit.lotspot.retrofit.request.AdminRequestModel
 import com.oit.lotspot.retrofit.request.LoginRequestModel
 import com.oit.lotspot.retrofit.request.SaveVehicleDetailsRequest
 import com.oit.lotspot.retrofit.request.VehicleDetailRequest
@@ -52,4 +53,10 @@ interface ApiInterface {
         @Query("origin") origin: String, @Query("destination") destination: String,
         @Query("sensor") sensor: String, @Query("mode") mode: String, @Query("key") key: String
     ): Call<GoogleMapPathModel>
+
+    @Headers("Content-Type:application/json", "Accept:application/json")
+    @POST("api/auth/company/request-approval")
+    fun submitRequest(@Body adminRequestModel: AdminRequestModel):
+            Call<SaveVehicleDetailResponseModel>
+
 }

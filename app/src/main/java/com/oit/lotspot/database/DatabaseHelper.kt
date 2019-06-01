@@ -41,7 +41,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
          */
         private val CREATE_TABLE_VEHICLE_DETAILS =
             "CREATE TABLE ${TABLE_VEHICLE}($KEY_YEAR INTEGER,$KEY_MAKE TEXT,$KEY_MODEL TEXT," +
-                    "$KEY_ENGINE TEXT,$KEY_IMAGE TEXT,$KEY_VIN TEXT)"
+                    "$KEY_ENGINE TEXT,$KEY_IMAGE TEXT,$KEY_VIN VARCHAR(20) PRIMARY KEY)"
     }
 
 
@@ -88,18 +88,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         if (cursor.moveToFirst()) {
             do {
                 arrayList.add(VehicleDetailResponseModel.VehicleDetailDataResponseModel().apply {
-                    this.id = cursor.getInt(0)
-                    this.year = cursor.getInt(1)
-                    this.make = cursor.getString(2)
-                    this.model = cursor.getString(3)
-                    this.engine = cursor.getString(4)
-                    this.image = cursor.getString(5)
-                    this.vin = cursor.getString(6)
-                    this.created_at = cursor.getString(7)
-                    this.updated_at = cursor.getString(8)
-                    this.lat = cursor.getDouble(9)
-                    this.lng = cursor.getDouble(10)
-                    this.address = cursor.getString(11)
+                  //  this.id = cursor.getInt(0)
+                    this.year = cursor.getInt(0)
+                    this.make = cursor.getString(1)
+                    this.model = cursor.getString(2)
+                    this.engine = cursor.getString(3)
+                    this.image = cursor.getString(4)
+                    this.vin = cursor.getString(5)
+//                    this.created_at = cursor.getString(7)
+//                    this.updated_at = cursor.getString(8)
+//                    this.lat = cursor.getDouble(9)
+//                    this.lng = cursor.getDouble(10)
+//                    this.address = cursor.getString(11)
                 })
 
             } while (cursor.moveToNext())

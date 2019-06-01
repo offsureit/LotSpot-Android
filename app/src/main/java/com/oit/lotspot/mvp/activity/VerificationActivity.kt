@@ -416,6 +416,10 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
             contact = contactNumber
             deviceToken = device_Token
         }
+        SharedPreferencesManager.with(this).edit()
+            .putString(Constants.SharedPref.PREF_USER_CONTACT, loginRequestModel.contact)
+            .apply()
+
         presenter.apiPostForLogin(loginRequestModel)
     }
 

@@ -20,12 +20,14 @@ object Constants {
         object Api {
             const val TERMS = "site/#/terms-conditions"
             const val PRIVACY = "site/#/privacy-policy"
+            const val PROFILE = "site/#/dashboard/profile"
         }
     }
 
     interface SharedPref {
         companion object {
             val PREF_USER_PROFILE = "user_profile"
+            val PREF_USER_CONTACT = "user_contact"
             val PREF_DEVICE_TOKEN = "pref_device_token"
             val PREF_IS_USER_LOGIN = "pref_is_user_login"
             val PREF_MSG_LONG_PRESS = "pref_msg_long_press"

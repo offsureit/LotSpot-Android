@@ -66,9 +66,6 @@ open class NavigationDrawerActivity : BaseActivity(), NavigationPresenter.Respon
         drawerLayoutRoot.closeDrawer(Gravity.START)
     }
 
-    private fun openWebPage(url: String) =
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-
 
     private fun addDrawerListener() {
 
