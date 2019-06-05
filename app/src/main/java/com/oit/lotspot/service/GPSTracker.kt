@@ -17,10 +17,11 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import com.oit.lotspot.constants.Constants
+import com.oit.lotspot.constants.PermissionConst
 import com.oit.lotspot.mvp.activity.TagLocationMapActivity
 
 
-class GPSTracker(private val mContext: Activity) : Service(), LocationListener {
+class GPSTracker(private val mContext: Activity,private val locationCHanged : LocationChangeInterface) : Service(), LocationListener {
 
     private var TAG = GPSTracker::class.java.simpleName
     private var context = this
@@ -46,7 +47,7 @@ class GPSTracker(private val mContext: Activity) : Service(), LocationListener {
     }
 
 
-    private fun getLocation(): Location? {
+     fun getLocation(): Location? {
         try {
             locationManager = mContext.getSystemService(LOCATION_SERVICE) as LocationManager?
 
@@ -71,8 +72,8 @@ class GPSTracker(private val mContext: Activity) : Service(), LocationListener {
 
                         ActivityCompat.requestPermissions(
                             mContext,
-                            Constants.Permission.LOCATION,
-                            Constants.RequestCode.LOCATION_REQUEST
+                            PermissionConst.PERMISSION.LOCATION_ARRAY,
+                            PermissionConst.REQUEST_CODE.LOCATION
                         )
                     }
                     locationManager!!.requestLocationUpdates(
@@ -101,8 +102,8 @@ class GPSTracker(private val mContext: Activity) : Service(), LocationListener {
 
                             ActivityCompat.requestPermissions(
                                 mContext,
-                                Constants.Permission.LOCATION,
-                                Constants.RequestCode.LOCATION_REQUEST
+                                PermissionConst.PERMISSION.LOCATION_ARRAY,
+                                PermissionConst.REQUEST_CODE.LOCATION
                             )
                         }
                         locationManager!!.requestLocationUpdates(
@@ -179,7 +180,7 @@ class GPSTracker(private val mContext: Activity) : Service(), LocationListener {
      * Function to show settings alert dialog.
      * On pressing the Settings button it will launch Settings Options.
      */
-    fun showSettingsAlert() {
+    fun showAlertForSettings() {
         val alertDialog = AlertDialog.Builder(mContext)
 
         // Setting Dialog Title
@@ -205,7 +206,7 @@ class GPSTracker(private val mContext: Activity) : Service(), LocationListener {
 
     override fun onLocationChanged(location: Location) {
         Log.d(TAG,"On Location Change Listener")
-
+        locationCHanged.myLocationChanged(location)
     }
 
 
@@ -229,5 +230,9 @@ class GPSTracker(private val mContext: Activity) : Service(), LocationListener {
 
         // The minimum time between updates in milliseconds
         private val MIN_TIME_BW_UPDATES = (1000 * 60 * 1).toLong() // 1 minute
+    }
+
+    interface LocationChangeInterface{
+        fun myLocationChanged(location: Location)
     }
 }

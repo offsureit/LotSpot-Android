@@ -10,6 +10,7 @@ import android.location.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
 import com.oit.lotspot.R
 import com.oit.lotspot.constants.Constants
+import com.oit.lotspot.constants.PermissionConst
+import com.oit.lotspot.constants.PermissionHelper
 import com.oit.lotspot.constants.TrackingConst
 import com.oit.lotspot.database.DatabaseHelper
 import com.oit.lotspot.database.SharedPreferencesManager
@@ -42,7 +45,7 @@ import java.text.DecimalFormat
 
 
 open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener,
-    OnMapReadyCallback, LocationListener, TagLocationMapPresenter.ResponseCallBack {
+    OnMapReadyCallback, TagLocationMapPresenter.ResponseCallBack, GPSTracker.LocationChangeInterface {
 
     private var TAG = TagLocationActivity::class.java.simpleName
     private var mMap: GoogleMap? = null
@@ -61,8 +64,12 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     private var routePathList: List<LatLng>? = null
     private var latLngBounds: LatLngBounds.Builder? = null
 
-    private var locationManager: LocationManager? = null
-    private var myLocation: Location? = null
+    private var location: Location? = null
+
+    private var checkPermission: Boolean = true
+    private var locationDialog: android.support.v7.app.AlertDialog? = null
+    private var permissionsDialog: android.support.v7.app.AlertDialog? = null
+    private var alertDialogSettings: android.support.v7.app.AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +77,8 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
 
         getIntentData()
         initUi()
-        checkLocationPermissions()
-        findLocationGPS(locationListener = this)
+
+        requestPermissionsIfNotGranted()
         initPresenter()
         clickListener()
         setUpMap()
@@ -108,7 +115,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
             tvSave.visibility = View.VISIBLE
             clDistance.visibility = View.GONE
         }
-        gpsTracker = GPSTracker(this)
+        gpsTracker = GPSTracker(this, this)
         initLatLngBounds()
     }
 
@@ -170,7 +177,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
      */
     private fun fetchAddress() {
         if (locationAddress == null)
-            locationAddress = geoCoder!!.getFromLocation(myLocation!!.latitude, myLocation!!.longitude, 1)
+            locationAddress = geoCoder!!.getFromLocation(location!!.latitude, location!!.longitude, 1)
     }
 
     /**
@@ -220,6 +227,8 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
                 isMapToolbarEnabled = true
                 isZoomControlsEnabled = true
                 isCompassEnabled = true
+
+                isMyLocationButtonEnabled = isLocationPermissionGranted()
             }
             setPadding(0, 0, 0, 400)
             getCurrentLocation()
@@ -241,14 +250,12 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
      */
     private fun getCurrentLocation(): LatLng {
         var latLng = LatLng(0.0, 0.0)
+       location = gpsTracker.getLocation()
 
-        if (!is_From_TAG_Location) {
-            if (gpsTracker.canGetLocation()) {
-                latLng = LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())
-            } else gpsTracker.showSettingsAlert()
-        } else {
-            latLng = LatLng(myLocation!!.latitude, myLocation!!.longitude)
+        if (location != null) {
+            latLng = LatLng(location!!.latitude, location!!.longitude)
         }
+//        else gpsTracker.showAlertForSettings()
 
         moveMarkerOnCurrentLocation(latLng)
         return latLng
@@ -388,7 +395,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
                 }
 
             routePolyLine = mMap!!.addPolyline(polyOptions)
-            val latLng = LatLng(myLocation!!.latitude, myLocation!!.longitude)
+            val latLng = LatLng(location!!.latitude, location!!.longitude)
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 800F))
         }
     }
@@ -444,107 +451,223 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     }
 
     /**
-     * Request for Permissions for location
+     * Request for location permissions
      */
-    private fun checkLocationPermissions(): Boolean {
-        val currentAPIVersion = Build.VERSION.SDK_INT
-        if (currentAPIVersion >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
+    private fun requestPermissionsIfNotGranted() {
+        when (isPermissionsGranted()) {
+            true -> Handler().postDelayed(
+                { checkLocationAndGpsAndForegroundServiceStatus() },
+                1000
+            )
 
-                ActivityCompat.requestPermissions(
-                    this,
-                    Constants.Permission.LOCATION,
-                    Constants.RequestCode.LOCATION_REQUEST
-                )
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    Constants.Permission.LOCATION,
-                    Constants.RequestCode.LOCATION_REQUEST
-                )
-                return true
-            }
+            false -> requestPermissions()
         }
-        return true
+    }
+
+    private fun checkLocationAndGpsAndForegroundServiceStatus() {
+        if (isPermissionsGranted())
+            if (isGPSEnabled()) {
+                val isShowAgain =
+                    SharedPreferencesManager.with(this).getBoolean(Constants.SharedPref.PREF_MSG_LONG_PRESS, false)
+                if (isShowAgain && !is_From_TAG_Location) showAlertForLongPress()
+                setUpMap()
+            } else {
+                showSettingsAlert()
+            }
+        else requestPermissions()
+    }
+
+    internal fun isPermissionsGranted(): Boolean {
+        var isCoarsePermissionGranted = true
+        var isFinePermissionGranted = true
+        var isForegroundServiceGranted = true
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            isCoarsePermissionGranted = true
+            isFinePermissionGranted = true
+            isForegroundServiceGranted = true
+        } else {
+            isCoarsePermissionGranted =
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            isFinePermissionGranted =
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        }
+
+        Log.d(
+            TAG,
+            "isPermissionsGranted :: isCoarsePermissionGranted-$isCoarsePermissionGranted, isFinePermissionGranted-$isFinePermissionGranted"
+        )
+
+        return isCoarsePermissionGranted && isFinePermissionGranted
+    }
+
+    internal fun isLocationPermissionGranted(): Boolean =
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1)
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.d(TAG, "Permission is granted")
+                true
+            } else {
+                Log.d(TAG, "Permission is not granted")
+                false
+            }
+        else {
+            Log.d(TAG, "Permission is granted since API<23")
+            true
+        }
+
+    private fun requestPermissions() =
+        PermissionHelper.requestLocationPermission(
+            mContext = this,
+            requestCode = PermissionConst.REQUEST_CODE.LOCATION
+        )
+
+    private fun isGPSEnabled(): Boolean =
+        (getSystemService(Context.LOCATION_SERVICE) as LocationManager)
+            .isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+    private fun showSettingsAlert() {
+        if (alertDialogSettings == null) {
+            val alertDialog = android.support.v7.app.AlertDialog.Builder(this)
+
+            alertDialog.apply {
+                // Setting Dialog Title
+                setTitle(getString(R.string.text_alert))
+                setCancelable(false)
+
+                // Setting Dialog Message
+                setMessage(getString(R.string.app_name) + getString(R.string.text_gps_permission))
+
+                // On pressing Settings button
+                setPositiveButton(getString(R.string.text_settings)) { _, _ ->
+                    startActivityForResult(
+                        Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
+                        PermissionConst.REQUEST_CODE.GPS
+                    )
+                }
+            }
+
+            alertDialogSettings = alertDialog.create()
+        }
+
+        // Showing Alert Message
+        alertDialogSettings!!.show()
+    }
+
+    /**
+     * This method is fired if user denied with or without checked Never Show again in permission dialog
+     */
+    private fun requestPermissionOnDenied() =
+        when (ActivityCompat.shouldShowRequestPermissionRationale(this, PermissionConst.PERMISSION.COARSE_LOCATION)
+                || ActivityCompat.shouldShowRequestPermissionRationale(
+            this,
+            PermissionConst.PERMISSION.FINE_LOCATION
+        )) {
+            true -> showRationalDialogForDeniedPermission()
+            false -> showSettingDialogForDeniedAndNeverShowPermissions()
+        }
+
+    private fun showRationalDialogForDeniedPermission() {
+        if (locationDialog == null) {
+            val alertDialog = android.support.v7.app.AlertDialog.Builder(this)
+
+            alertDialog.apply {
+                setMessage(
+                    String.format(
+                        getString(R.string.text_alert_permissions),
+                        getString(R.string.app_name)
+                    )
+                )
+                setCancelable(false)
+
+                setPositiveButton(getString(R.string.allow)) { dialog, _ ->
+                    dialog.dismiss()
+                    PermissionHelper.requestLocationPermission(
+                        mContext = this@TagLocationMapActivity,
+                        requestCode = PermissionConst.REQUEST_CODE.LOCATION
+                    )
+                }
+            }
+
+            locationDialog = alertDialog.create()
+        }
+        locationDialog?.show()
+    }
+
+    private fun showSettingDialogForDeniedAndNeverShowPermissions() {
+        if (permissionsDialog == null) {
+            val alertDialog = android.support.v7.app.AlertDialog.Builder(this)
+
+            alertDialog.apply {
+                setMessage(
+                    String.format(
+                        getString(R.string.text_alert_permissions_settings),
+                        getString(R.string.app_name)
+                    )
+                )
+                setCancelable(false)
+
+                setPositiveButton(getString(R.string.text_settings)) { dialog, _ ->
+                    dialog.dismiss()
+
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.data = Uri.parse(String.format(getString(R.string.text_package), packageName))
+                    startActivityForResult(intent, PermissionConst.REQUEST_CODE.SETTINGS)
+                }
+            }
+
+            permissionsDialog = alertDialog.create()
+        }
+
+        permissionsDialog?.show()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         when (requestCode) {
-            Constants.RequestCode.LOCATION_REQUEST -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    val isShowAgain =
-                        SharedPreferencesManager.with(this).getBoolean(Constants.SharedPref.PREF_MSG_LONG_PRESS, false)
-                    if (isShowAgain && !is_From_TAG_Location) showAlertForLongPress()
-                } else {
-                    if ((ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION
-                        )) &&
-                        ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION
-                        )
-                    ) {
-                        showAlertForPermissions()
-                    } else
-                        showAlertForSettings()
+            PermissionConst.REQUEST_CODE.LOCATION -> {
+                var isCoarsePermissionGranted = true
+                var isFinePermissionGranted = true
+
+                if (grantResults.isNotEmpty()) {
+                    grantResults.indices.forEach { result ->
+                        if (grantResults[result] != PackageManager.PERMISSION_GRANTED)
+                            when (permissions[result]) {
+                                PermissionConst.PERMISSION.COARSE_LOCATION -> isCoarsePermissionGranted = false
+                                PermissionConst.PERMISSION.FINE_LOCATION -> isFinePermissionGranted = false
+                            }
+                    }
+
+                    when (isCoarsePermissionGranted && isFinePermissionGranted) {
+                        true -> {
+                            Log.d(TAG, "Permission: Granted")
+
+                            checkLocationAndGpsAndForegroundServiceStatus()
+                        }
+
+                        false -> requestPermissionOnDenied()
+                    }
                 }
-                return
             }
         }
     }
 
-    /**
-     * Show dialog if user deny location permissions permanently
-     */
-    private fun showAlertForSettings() {
-        val alertDialog = android.app.AlertDialog.Builder(this, R.style.MyDialogTheme)
-        alertDialog.setMessage(getString(R.string.text_access_permission_msg))
-        alertDialog.setPositiveButton(getString(R.string.text_settings)) { dialog, _ ->
-            sendUserToSettings()
-        }
-        alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
-            dialog.dismiss()
-        }
-        alertDialog.setCancelable(true)
-        alertDialog.show()
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    /**
-     * Show dialog if user deny location permissions but temporary
-     */
-    private fun showAlertForPermissions() {
-        val alertDialog = android.app.AlertDialog.Builder(this, R.style.MyDialogTheme)
-        alertDialog.setMessage(getString(R.string.text_access_permission_msg))
-        alertDialog.setPositiveButton(getString(R.string.text_ok)) { dialog, _ ->
-            dialog.dismiss()
-            ActivityCompat.requestPermissions(
-                this,
-                Constants.Permission.LOCATION,
-                Constants.RequestCode.LOCATION_REQUEST
-            )
-        }
-        alertDialog.setNegativeButton(getString(R.string.text_no)) { dialog, _ ->
-            dialog.dismiss()
-        }
-        alertDialog.setCancelable(true)
-        alertDialog.show()
-    }
+        when (requestCode) {
+            PermissionConst.REQUEST_CODE.GPS -> {
+                if (resultCode == RESULT_OK)
+                    checkLocationAndGpsAndForegroundServiceStatus()
+            }
 
-    /**
-     * Send user into settings (if user deny permissions permanently)
-     */
-    private fun sendUserToSettings() {
-        val intent = Intent()
-        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-        intent.addCategory(Intent.CATEGORY_DEFAULT)
-        intent.data = Uri.parse("package:" + this.packageName)
-        this.startActivityForResult(intent, Constants.RequestCode.SETTINGS)
+            PermissionConst.REQUEST_CODE.SETTINGS -> {
+                checkPermission = true
+                checkLocationAndGpsAndForegroundServiceStatus()
+            }
+        }
     }
 
     /**
@@ -564,25 +687,6 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                when (requestCode) {
-                    Constants.RequestCode.SETTINGS -> {
-                        setUpMap()
-                    }
-                }
-            }
-            Activity.RESULT_CANCELED -> {
-                finish()
-            }
-        }
-        if (resultCode == Activity.RESULT_OK && requestCode == Constants.RequestCode.SETTINGS) {
-            setUpMap()
-        }
     }
 
     /**
@@ -659,80 +763,11 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         } else responseFailure(errorResponse)
     }
 
-    override fun onLocationChanged(location: Location?) {
-        Log.d(TAG, "on location changed to lat ${location!!.latitude}    long ${location!!.longitude}")
+    override fun myLocationChanged(location: Location) {
         if (is_From_TAG_Location && mMap != null) {
             getCurrentLocation()
             showVehicleLocation()
             calculateDistance()
-        }
-    }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-
-    }
-
-    override fun onProviderEnabled(provider: String?) {
-
-    }
-
-    override fun onProviderDisabled(provider: String?) {
-
-    }
-
-    /**
-     * update user's current locations
-     */
-    private fun findLocationGPS(locationListener: LocationListener) {
-
-        try {
-            locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-            // getting GPS status
-            val isGPSEnabled = locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
-
-            if (isGPSEnabled) {
-                Log.d(TAG, "GPS enabled")
-
-                if (ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    // if GPS Enabled get lat/long using GPS Services
-                    locationManager!!.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        TrackingConst.DURATION_MILLISECONDS.MIN_BW_LOCATION_UPDATES,
-                        TrackingConst.DISTANCE_METER.MIN_BETWEEN_LOCATION_UPDATES,
-                        locationListener
-                    )
-
-                    if (locationManager != null) {
-                        myLocation = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-                        myLocation?.apply {
-
-                        }
-                    }
-
-                    if (myLocation != null)
-                        Log.i(
-                            TAG, "findLocationGPS - lat:" + myLocation!!.latitude + ", lng:" + myLocation!!.longitude
-                        )
-                } else {
-                    Log.d(TAG, "Location permission not granted")
-                    // give permission
-                }
-            } else {
-                Log.d(TAG, "GPS disabled")
-                // enable GPS
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 

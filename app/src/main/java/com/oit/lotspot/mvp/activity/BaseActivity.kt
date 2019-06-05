@@ -58,7 +58,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
         Toast.makeText(this@BaseActivity, message, Toast.LENGTH_SHORT).show()
 
     /**
-     * call for show progess loader
+     * call for show progress loader
      */
     internal fun showProgressView() {
         if (progressDialog == null)
@@ -123,7 +123,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
     }
 
     /**
-     * Here is call to show alert when session of user is expire,
+     * Here is call to show alert when session is expire,
      * Profile is blocked
      */
     private fun showAlertForProfileBlocked(message: String) {
@@ -136,6 +136,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
         // On pressing dialog button
         alertDialog.setPositiveButton(getString(R.string.request_admin)) { dialog, _ ->
             dialog.cancel()
+           // clearToken()
             startActivity(Intent(this@BaseActivity, SubmitRequestActivity::class.java))
         }
         alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
@@ -185,8 +186,9 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
             LoginResponseModel.LoginResponseFirstModel::class.java
         )
 
-        if (model.token!!.isNotEmpty())
+        if (model.token!! != "") {
             model.apply { token = "" }
+        }
 
         SharedPreferencesManager.with(this)
             .edit()
@@ -214,7 +216,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
 
 
     /**
-     * Check failure status code of api
+     * Check status code on api failure
      */
     internal fun responseFailure(errorResponse: ErrorResponse) {
         when (errorResponse.error.status_code) {
@@ -223,7 +225,6 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
                     (context as VerificationActivity).showAlertForSignUp(errorResponse.error.errors.contact!![0])
             }
             401 -> {
-//                clearToken()
                 showAlertForProfileBlocked(errorResponse.error.message)
             }
             else -> {
@@ -381,5 +382,4 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         showMessage(isConnected)
     }
-
 }

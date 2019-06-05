@@ -23,7 +23,7 @@ class SubmitRequestPresenter(var responseCallBack: ResponseCallBack) {
     }
 
     fun apiPostToSubmitRequest(adminRequestModel: AdminRequestModel) {
-        val apiService = ApiClient.client_live.create(ApiInterface::class.java)
+        val apiService = ApiClient.client.create(ApiInterface::class.java)
         val call = apiService.submitRequest(adminRequestModel)
 
         call.enqueue(object : Callback<SaveVehicleDetailResponseModel> {

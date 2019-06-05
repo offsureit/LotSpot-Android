@@ -103,9 +103,22 @@
     <string name="text_settings">Settings</string>
     <string name="text_buy">Buy</string>
     <string name="text_renew">Renew</string>
+    <string name="allow">Allow</string>
     <string name="request_admin">Request Admin</string>
 
     <string name="text_access_permission_msg">These Permissions are necessary for App</string>
+    <string name="text_gps_permission">&#160;will not run without enabling GPS. Please go to settings and turn on GPS.
+    </string>
+    <string name="text_alert_permissions"><xliff:g id="view">%1$s</xliff:g>&#160;will not run without allowing
+        all the permissions.
+    </string>
+
+    <string name="text_alert_permissions_settings"><xliff:g id="view">%1$s</xliff:g>&#160;will not run without
+        allowing all the permissions. Please go to settings and turn on all the permissions.
+    </string>
+    <string name="text_package">package:
+        <xliff:g id="view">%1$s</xliff:g>
+    </string>
     <string name="dialog_title">Scan Code Result</string>
     <string name="text_long_press_msg">Long press on Map to Tag Vehicle location</string>
     <string name="text_don_show_again">Don\'t show again</string>

@@ -13,17 +13,17 @@ object ApiClient {
 
     val DIRECTIONS_API_LINK = "https://maps.googleapis.com/maps/api/"
 
-    val BASE_URL_SIGNUP = "http://103.36.77.34/lotspot/site/#/user/login"
+    val BASE_URL_SIGNUP = "http://103.212.235.82/lotspot/site/#/user/login"
 
     private var retrofit: Retrofit? = null
     private var retrofit2: Retrofit? = null
-    private var retrofit_live: Retrofit? = null
+   // private var retrofit_live: Retrofit? = null
 
     val client: Retrofit
         get() {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BASE_URL_LIVE)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             }
@@ -41,16 +41,16 @@ object ApiClient {
             return retrofit2!!
         }
 
-    val client_live: Retrofit
-        get() {
-            if (retrofit_live == null) {
-                retrofit_live = Retrofit.Builder()
-                    .baseUrl(BASE_URL_LIVE)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-            }
-            return retrofit_live!!
-        }
+//    val client_live: Retrofit
+//        get() {
+//            if (retrofit_live == null) {
+//                retrofit_live = Retrofit.Builder()
+//                    .baseUrl(BASE_URL_LIVE)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build()
+//            }
+//            return retrofit_live!!
+//        }
 
 }
 

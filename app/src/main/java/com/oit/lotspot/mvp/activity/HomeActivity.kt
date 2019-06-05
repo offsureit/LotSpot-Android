@@ -33,6 +33,9 @@ import kotlinx.android.synthetic.main.layout_home.*
 import android.content.DialogInterface
 import android.graphics.Color
 import android.provider.ContactsContract
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import com.oit.lotspot.database.DatabaseHelper
 
 
@@ -244,8 +247,6 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 barcodeResult = barcode
 
                 updateVinNumber(barcode.rawValue)
-                // setScannedVinNumber(barcode.rawValue)
-
             }
             .build()
         materialBarcodeScanner.startScan()

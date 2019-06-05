@@ -56,11 +56,11 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
      * remove single vehicle from All vehicle history
      */
     internal fun deleteItem(vehicleId: Int): Int {
-        val index = vehicleListFirstResponseModel.data.firstOrNull { it.id == vehicleId }?.let {
-            vehicleListFirstResponseModel.data.indexOf(it)
+        val index = filteredVehicleList.data.firstOrNull { it.id == vehicleId }?.let {
+            filteredVehicleList.data.indexOf(it)
         } ?: -1
         if (index > -1) {
-            vehicleListFirstResponseModel.data.removeAt(index)
+            filteredVehicleList.data.removeAt(index)
             notifyItemRemoved(index)
         }
         return index
