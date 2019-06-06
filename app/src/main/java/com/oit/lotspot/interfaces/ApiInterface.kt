@@ -59,4 +59,9 @@ interface ApiInterface {
     fun submitRequest(@Body adminRequestModel: AdminRequestModel):
             Call<SaveVehicleDetailResponseModel>
 
+    @Headers("Content-Type:application/json","Accept:application/json")
+    @GET("api/auth/company/me")
+    fun companyProfile(@Header("Authorization") authToken:String):Call<LoginResponseModel.LoginResponseProfileModel>
+
+
 }

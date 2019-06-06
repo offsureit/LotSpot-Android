@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.oit.lotspot.constants.Constants
 import com.oit.lotspot.retrofit.request.VehicleDetailRequest
 import com.oit.lotspot.retrofit.response.ErrorResponse
+import com.oit.lotspot.retrofit.response.LoginResponseModel
 import com.oit.lotspot.retrofit.response.VehicleDetailResponseModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,7 +21,10 @@ class HomePresenter(private var responseCallBack: ResponseCallBack) {
 
     interface ResponseCallBack {
         fun onSuccess(response: VehicleDetailResponseModel.VehicleDetailFirstResponseModel)
+
         fun onFailure(errorResponse: ErrorResponse)
+
+        fun onSuccessProfile(response: LoginResponseModel.LoginResponseProfileModel)
     }
 
     fun apiGetForVehicleDetails(token: String, vehicleDetailRequest: VehicleDetailRequest) {
@@ -56,4 +60,36 @@ class HomePresenter(private var responseCallBack: ResponseCallBack) {
         })
     }
 
+    fun apiGetForCompanyProfile(authToken: String) {
+        val apiService = ApiClient.client.create(ApiInterface::class.java)
+        val call = apiService.companyProfile(Constants.App.AUTHORIZATION + authToken)
+
+        call.enqueue(object : Callback<LoginResponseModel.LoginResponseProfileModel> {
+            override fun onResponse(
+                call: Call<LoginResponseModel.LoginResponseProfileModel>,
+                responseModel: Response<LoginResponseModel.LoginResponseProfileModel>
+            ) {
+
+                if (responseModel.isSuccessful) {
+                    Log.d(TAG, "response  Body = ${responseModel.body()}")
+                    responseCallBack.onSuccessProfile(responseModel.body()!!)
+
+                } else {
+                    val reader: Reader = responseModel.errorBody()!!.charStream()
+                    errorResponse = Gson().fromJson(reader, ErrorResponse::class.java)
+
+                    Log.d(TAG, "response failure Body = ${responseModel.errorBody()}")
+                    responseCallBack.onFailure(errorResponse)
+                }
+            }
+
+            override fun onFailure(
+                call: Call<LoginResponseModel.LoginResponseProfileModel>,
+                t: Throwable
+            ) {
+                Log.d(TAG, "Entered in failure")
+                responseCallBack.onFailure(errorResponse)
+            }
+        })
+    }
 }

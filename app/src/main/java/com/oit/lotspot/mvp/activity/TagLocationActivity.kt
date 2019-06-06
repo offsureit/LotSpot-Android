@@ -36,7 +36,7 @@ class TagLocationActivity : BaseActivity() {
                         intent.getStringExtra(Constants.App.Bundle_Key.TAG_LOCATION),
                         VehicleDetailResponseModel.VehicleDetailDataResponseModel::class.java
                     )
-                    setIntentDataInViews()
+                setIntentDataInViews()
             }
         }
     }
@@ -52,7 +52,10 @@ class TagLocationActivity : BaseActivity() {
             )
         )
 
-        Picasso.get().load(vehicleDetailResponseModel.image).placeholder(R.drawable.place_holder).into(ivVehicle)
+        if (vehicleDetailResponseModel.image == "") Picasso.get().load(R.drawable.place_holder).placeholder(R.drawable.place_holder).into(
+            ivVehicle
+        )
+        else Picasso.get().load(vehicleDetailResponseModel.image).placeholder(R.drawable.place_holder).into(ivVehicle)
     }
 
     /**

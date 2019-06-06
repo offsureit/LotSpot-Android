@@ -44,9 +44,11 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
     private var isInternetConnected: Boolean? = null
     var databaseHelper = DatabaseHelper
 
+    val receiver = ConnectionReceiver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerReceiver()
+        registerdReceiver()
     }
 
     override fun onResume() {
@@ -136,7 +138,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
         // On pressing dialog button
         alertDialog.setPositiveButton(getString(R.string.request_admin)) { dialog, _ ->
             dialog.cancel()
-           // clearToken()
+            // clearToken()
             startActivity(Intent(this@BaseActivity, SubmitRequestActivity::class.java))
         }
         alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
@@ -362,9 +364,9 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
     }
 
 
-    private fun registerReceiver() {
+    private fun registerdReceiver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(ConnectionReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+            registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         }
     }
 
@@ -381,5 +383,10 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
      */
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         showMessage(isConnected)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        unregisterReceiver(receiver)
     }
 }

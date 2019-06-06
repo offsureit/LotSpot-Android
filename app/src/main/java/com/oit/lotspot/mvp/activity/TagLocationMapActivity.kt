@@ -58,13 +58,14 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     private var vehicleDetailResponseModel = VehicleDetailResponseModel.VehicleDetailDataResponseModel()
     private var saveVehicleDetailsRequest = SaveVehicleDetailsRequest()
     private lateinit var presenter: TagLocationMapPresenter
-    private var is_From_TAG_Location = false
+    private var is_From_Tag_Location = false
 
     private var routePolyLine: Polyline? = null
     private var routePathList: List<LatLng>? = null
     private var latLngBounds: LatLngBounds.Builder? = null
 
     private var location: Location? = null
+    private var mylocation: Location? = null
 
     private var checkPermission: Boolean = true
     private var locationDialog: android.support.v7.app.AlertDialog? = null
@@ -93,7 +94,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
                         intent.getStringExtra(Constants.App.Bundle_Key.TAG_LOCATION_MAP),
                         VehicleDetailResponseModel.VehicleDetailDataResponseModel::class.java
                     )
-                is_From_TAG_Location = intent.getBooleanExtra(Constants.App.Bundle_Key.IS_FROM_TAG_LOCATION, false)
+                is_From_Tag_Location = intent.getBooleanExtra(Constants.App.Bundle_Key.IS_FROM_TAG_LOCATION, false)
 
                 setIntentDataInViews()
             }
@@ -106,7 +107,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     private fun initUi() {
         tvTitle.visibility = View.VISIBLE
 
-        if (is_From_TAG_Location) {
+        if (is_From_Tag_Location) {
             tvTitle.text = getString(R.string.text_title_vehicle_location)
             tvSave.visibility = View.GONE
             clDistance.visibility = View.VISIBLE
@@ -239,7 +240,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         mMap!!.setOnMapLongClickListener(this)
         geoCoder = Geocoder(this)
 
-        if (is_From_TAG_Location) {
+        if (is_From_Tag_Location) {
             showVehicleLocation()
             calculateDistance()
         }
@@ -250,7 +251,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
      */
     private fun getCurrentLocation(): LatLng {
         var latLng = LatLng(0.0, 0.0)
-       location = gpsTracker.getLocation()
+        location = gpsTracker.getLocation()
 
         if (location != null) {
             latLng = LatLng(location!!.latitude, location!!.longitude)
@@ -396,7 +397,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
 
             routePolyLine = mMap!!.addPolyline(polyOptions)
             val latLng = LatLng(location!!.latitude, location!!.longitude)
-            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 800F))
+            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
         }
     }
 
@@ -426,7 +427,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         }
         alertDialog.setPositiveButton(getString(R.string.text_buy)) { dialog, _ ->
             dialog.dismiss()
-            finish()
+            openWebPage(ApiClient.BASE_URL_LINKS + Constants.App.Api.USER_LOGIN)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
@@ -444,7 +445,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         }
         alertDialog.setPositiveButton(getString(R.string.text_renew)) { dialog, _ ->
             dialog.dismiss()
-            openWebPage(ApiClient.BASE_URL_LINKS + Constants.App.Api.PROFILE)
+            openWebPage(ApiClient.BASE_URL_LINKS + Constants.App.Api.USER_LOGIN)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
@@ -456,7 +457,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     private fun requestPermissionsIfNotGranted() {
         when (isPermissionsGranted()) {
             true -> Handler().postDelayed(
-                { checkLocationAndGpsAndForegroundServiceStatus() },
+                { checkLocationAndGpsAndStatus() },
                 1000
             )
 
@@ -464,12 +465,12 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         }
     }
 
-    private fun checkLocationAndGpsAndForegroundServiceStatus() {
+    private fun checkLocationAndGpsAndStatus() {
         if (isPermissionsGranted())
             if (isGPSEnabled()) {
                 val isShowAgain =
                     SharedPreferencesManager.with(this).getBoolean(Constants.SharedPref.PREF_MSG_LONG_PRESS, false)
-                if (isShowAgain && !is_From_TAG_Location) showAlertForLongPress()
+                if (isShowAgain && !is_From_Tag_Location) showAlertForLongPress()
                 setUpMap()
             } else {
                 showSettingsAlert()
@@ -644,7 +645,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
                         true -> {
                             Log.d(TAG, "Permission: Granted")
 
-                            checkLocationAndGpsAndForegroundServiceStatus()
+                            checkLocationAndGpsAndStatus()
                         }
 
                         false -> requestPermissionOnDenied()
@@ -660,12 +661,12 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         when (requestCode) {
             PermissionConst.REQUEST_CODE.GPS -> {
                 if (resultCode == RESULT_OK)
-                    checkLocationAndGpsAndForegroundServiceStatus()
+                    checkLocationAndGpsAndStatus()
             }
 
             PermissionConst.REQUEST_CODE.SETTINGS -> {
                 checkPermission = true
-                checkLocationAndGpsAndForegroundServiceStatus()
+                checkLocationAndGpsAndStatus()
             }
         }
     }
@@ -693,7 +694,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
      * show marker on location after long click
      */
     override fun onMapLongClick(points: LatLng?) {
-        if (!is_From_TAG_Location) {
+        if (!is_From_Tag_Location) {
             if (null == marker) {
                 marker = mMap!!.addMarker(
                     MarkerOptions().position(points!!).icon(BitmapDescriptorFactory.fromResource(R.drawable.pin)).title(
@@ -764,7 +765,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     }
 
     override fun myLocationChanged(location: Location) {
-        if (is_From_TAG_Location && mMap != null) {
+        if (is_From_Tag_Location && mMap != null) {
             getCurrentLocation()
             showVehicleLocation()
             calculateDistance()

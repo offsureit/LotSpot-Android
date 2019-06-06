@@ -101,14 +101,14 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
             true -> {
                 searchView.text.clear()
                 searchView.clearFocus()
-                hideSoftKeyboard(searchView)
+             //   hideSoftKeyboard(searchView)
                 hitApiToGetVehicleList()
             }
 
             false -> {
                 searchView.isFocusableInTouchMode = true
                 searchView.isFocusable = true
-                showKeyboard(searchView)
+              //  showKeyboard(searchView)
                 setTextWatcher()
             }
         }
@@ -119,7 +119,7 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
      */
     private fun clickForClearSearchedText() {
         searchView.text.clear()
-        hideSoftKeyboard(searchView)
+     //   hideSoftKeyboard(searchView)
         adapter.filter.filter("")
     }
 

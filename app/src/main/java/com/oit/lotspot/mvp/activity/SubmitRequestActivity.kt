@@ -56,6 +56,21 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
     }
 
     /**
+     * Validate details
+     */
+    private fun validateDetails(): Boolean {
+        if (etSubject.text.isEmpty()) {
+            etSubject.error = getString(R.string.text_empty_subject_msg)
+            return false
+        }
+        if (etNote.text.isEmpty()) {
+            etNote.error = getString(R.string.text_empty_note_msg)
+            return false
+        }
+        return true
+    }
+
+    /**
      * Click events in views
      */
     private fun clickListener() {
@@ -66,7 +81,7 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
     private var clickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.ivMenu -> onBackPressed()
-            R.id.btnSubmit -> apiHitForSubmitRequestToAdmin()
+            R.id.btnSubmit -> if (validateDetails()) apiHitForSubmitRequestToAdmin()
         }
     }
 
@@ -97,7 +112,7 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
      */
     override fun onFailure(errorResponse: ErrorResponse) {
         hideProgressDialog()
-        showToast("Failure..")
+        responseFailure(errorResponse)
     }
 
     override fun onBackPressed() = finish()

@@ -37,6 +37,7 @@ import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.oit.lotspot.database.DatabaseHelper
+import com.oit.lotspot.retrofit.ApiClient
 
 
 class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack {
@@ -51,14 +52,8 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         super.onCreate(savedInstanceState)
         layoutInflater.inflate(R.layout.activity_home, flContainer)
 
-        initUi()
         initPresenter()
         clickListener()
-    }
-
-    private fun initUi() {
-        etVinNumber.isFocusableInTouchMode = false
-        etVinNumber.isFocusable = false
     }
 
     /**
@@ -66,6 +61,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
      */
     private fun initPresenter() {
         presenter = HomePresenter(this)
+        hitApiForCompanyProfile()
     }
 
     /**
@@ -83,14 +79,11 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         if (shouldProceedClick())
             when (view.id) {
 
-                R.id.ivMenu -> {
-                    drawerLayoutRoot.openDrawer(Gravity.START)
-                    hideSoftKeyboard(etVinNumber)
-                }
+                R.id.ivMenu -> drawerLayoutRoot.openDrawer(Gravity.START)
 
                 R.id.ivScanVin -> checkCameraPermission()
 
-                R.id.ivVinText -> enableViewForEnterVin()
+                R.id.ivVinText -> enableSearchViewForEnterVin()
 
                 R.id.etVinNumber -> enableViewForEnterVin()
 
@@ -103,9 +96,12 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
     }
 
     private fun enableViewForEnterVin() {
-        etVinNumber.isFocusableInTouchMode = true
-        etVinNumber.isFocusable = true
+        etVinNumber.isCursorVisible = true
         ivBtnSearch.isClickable = true
+    }
+
+    private fun enableSearchViewForEnterVin() {
+        enableViewForEnterVin()
         showKeyboard(etVinNumber)
     }
 
@@ -212,8 +208,9 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
             dialog.dismiss()
         }
-        alertDialog.setPositiveButton(getString(R.string.text_buy)) { dialog, _ ->
+        alertDialog.setPositiveButton(getString(R.string.text_renew)) { dialog, _ ->
             dialog.dismiss()
+            openWebPage(ApiClient.BASE_URL_LINKS + Constants.App.Api.USER_LOGIN)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
@@ -296,6 +293,14 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         }
     }
 
+
+    /**
+     * Call for Api Company Profile
+     */
+    private fun hitApiForCompanyProfile() {
+        presenter.apiGetForCompanyProfile(getAuthToken())
+    }
+
     /**
      * Call for api to get vehicle details from vin number
      */
@@ -325,4 +330,22 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         hideProgressDialog()
         responseFailure(errorResponse)
     }
+
+    /**
+     * when successful response or data retrieved from api Company Profile
+     *
+     * @param response successful response from api
+     */
+    override fun onSuccessProfile(response: LoginResponseModel.LoginResponseProfileModel) {
+        val model = Gson().fromJson(
+            SharedPreferencesManager.with(this).getString(Constants.SharedPref.PREF_USER_PROFILE, ""),
+            LoginResponseModel.LoginResponseFirstModel::class.java
+        )
+
+        if (model.profile.name != null)
+            SharedPreferencesManager.with(this).edit()
+                .putString(Constants.SharedPref.PREF_USER_PROFILE, Gson().toJson(response)).apply()
+    }
+
 }
+

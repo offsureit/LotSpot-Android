@@ -356,12 +356,17 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
 
     private val firebaseCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential?) {
-            if (null == phoneAuthCredential)
-                return
-
-            this@VerificationActivity.verificationCode = "${phoneAuthCredential.smsCode}"
-            setAutoDetectOtp()
-            //  authenticateOtp()
+            if (null == phoneAuthCredential) {
+                apiHitForUserLogin()
+            } else {
+                val code = phoneAuthCredential.smsCode
+                if (null != code) {
+                    this@VerificationActivity.verificationCode = "${phoneAuthCredential.smsCode}"
+                    setAutoDetectOtp()
+                } else {
+                    apiHitForUserLogin()
+                }
+            }
         }
 
         override fun onVerificationFailed(e: FirebaseException?) {

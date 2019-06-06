@@ -22,10 +22,10 @@
 
     <!-- Verification Activity -->
     <string name="space"></string>
-    <string name="text_resend">Resend code</string>
-    <string name="text_verification">Verification Code</string>
+    <string name="text_resend">Resend Code</string>
+    <string name="text_verification">Verify OTP</string>
     <string name="text_number">2</string>
-    <string name="text_verify">Please type the verification code send to</string>
+    <string name="text_verify">Please enter the verification code sent to</string>
     <string name="text_number_one">1</string>
     <string name="text_number_two">2</string>
     <string name="text_number_three">3</string>
@@ -136,5 +136,7 @@
     <string name="text_subject_hint">text..</string>
     <string name="submit">Submit</string>
     <string name="title_submit_request">Submit Request</string>
+    <string name="text_empty_subject_msg">Plaese enter Subject</string>
+    <string name="text_empty_note_msg">Plaese enter Note</string>
 
 </resources>
