@@ -452,7 +452,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     }
 
     /**
-     * Request for location permissions
+     * Request for location permissions if not granted
      */
     private fun requestPermissionsIfNotGranted() {
         when (isPermissionsGranted()) {
@@ -481,12 +481,10 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     internal fun isPermissionsGranted(): Boolean {
         var isCoarsePermissionGranted = true
         var isFinePermissionGranted = true
-        var isForegroundServiceGranted = true
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
             isCoarsePermissionGranted = true
             isFinePermissionGranted = true
-            isForegroundServiceGranted = true
         } else {
             isCoarsePermissionGranted =
                 checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -502,6 +500,9 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         return isCoarsePermissionGranted && isFinePermissionGranted
     }
 
+    /**
+     * Check for location permissions granted or not
+     */
     internal fun isLocationPermissionGranted(): Boolean =
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1)
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -518,16 +519,25 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
             true
         }
 
+    /**
+     * Request for Location permissions
+     */
     private fun requestPermissions() =
         PermissionHelper.requestLocationPermission(
             mContext = this,
             requestCode = PermissionConst.REQUEST_CODE.LOCATION
         )
 
+    /**
+     * Check for Gps enabled or disabled
+     */
     private fun isGPSEnabled(): Boolean =
         (getSystemService(Context.LOCATION_SERVICE) as LocationManager)
             .isProviderEnabled(LocationManager.GPS_PROVIDER)
 
+    /**
+     * Show Alert if Gps disable and send user to settings
+     */
     private fun showSettingsAlert() {
         if (alertDialogSettings == null) {
             val alertDialog = android.support.v7.app.AlertDialog.Builder(this)

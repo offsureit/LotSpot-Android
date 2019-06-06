@@ -382,7 +382,6 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
             hideProgressDialog()
             showToast(getString(R.string.the_sms_verificaton_code_has_been_sent_to_the_provided_phone_number))
             startTimer()
-
         }
     }
 
