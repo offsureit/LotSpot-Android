@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Trucker</string>
+
+    <!--Home Trucker -->
+    <string name="text_lat_lng">LAT/LONG:</string>
+    <string name="address">Mohali Phase 8B</string>
+    <string name="find_car">Find Car</string>
+    <string name="add_to_manifest">Add To Manifest</string>
+
+    <!-- Manifest Activity -->
+    <string name="manifest_title">Manifest</string>
+
+    <!-- Trucker Map Activity-->
+    <string name="map_title">Map</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!-- Navigation Drawer Trucker Activity-->
+    <string name="profile">Profile</string>
+    <string name="text_privacy">Privacy Policy</string>
+    <string name="text_terms_condition">Terms and Conditions</string>
+    <string name="text_logout">Logout</string>
+
+    <!-- Profile Activity -->
+    <string name="name">Name:</string>
+    <string name="email">Email:</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="referral_earns">Referral earns:</string>
+    <string name="name_hint">Jack Smith</string>
+    <string name="email_hint">jack@gmail.com</string>
+    <string name="phone_number_hint">+111 2222 3333</string>
+</resources>

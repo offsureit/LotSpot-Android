@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.oit.lotspot">
+
+    <application
+            android:label="@string/app_name"
+            tools:ignore="GoogleAppIndexingWarning"
+            tools:node="merge">
+
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
+
+        <activity
+                android:name=".activity.TagLocationMapActivity"
+                android:label="@string/title_activity_tag_location_map"/>
+        <activity
+                android:name=".activity.TagLocationActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".activity.NavigationDrawerActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".activity.HistoryActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan"/>
+        <activity
+                android:name=".activity.HomeActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan"/>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,4 @@
+# Configs for "trucker" productFlavor
+MODE = "TRUCKER"
+
+USER_ROLE = "trucker"

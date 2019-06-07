@@ -59,11 +59,11 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
      * Validate details
      */
     private fun validateDetails(): Boolean {
-        if (etSubject.text.isEmpty()) {
+        if (etSubject.text.trim().isEmpty()) {
             etSubject.error = getString(R.string.text_empty_subject_msg)
             return false
         }
-        if (etNote.text.isEmpty()) {
+        if (etNote.text.trim().isEmpty()) {
             etNote.error = getString(R.string.text_empty_note_msg)
             return false
         }

@@ -49,6 +49,50 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223247436847:android:f350bf031efec8e3",
+        "android_client_info": {
+          "package_name": "com.oit.lotspotter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223247436847-copj1n1qia93sdaopom1ltktaeutsans.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oit.lotspotter",
+            "certificate_hash": "cb263abd4686bb408148ff3f7c0fb6c736673fdc"
+          }
+        },
+        {
+          "client_id": "223247436847-3r6rinchmicqh8u5m3093uumg9hm02ee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnYNTNfEtqaHVuX0D9jbb6jkdbARE2Gjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223247436847-3r6rinchmicqh8u5m3093uumg9hm02ee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "223247436847-d2n5cp2j3b7al3257vjvdptsq47lt0qi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oit.lotspot"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

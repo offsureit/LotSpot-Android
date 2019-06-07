@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp">
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_13sdp"
+            android:layout_marginEnd="@dimen/_12sdp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/ivVehicle"
+                android:layout_width="@dimen/_72sdp"
+                android:layout_height="@dimen/_72sdp"
+                app:riv_corner_radius="@dimen/_3sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/place_holder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+                android:id="@+id/ivRedCross"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/red"
+                app:layout_constraintTop_toTopOf="@id/ivVehicle"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/app_name"/>
+
+        <TextView
+                android:id="@+id/tvVin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16ssp"
+                android:text="@string/text_vin"
+                android:textColor="@color/colorText"
+                android:fontFamily="@font/roboto_medium"
+                android:layout_marginStart="@dimen/_9sdp"
+                app:layout_constraintStart_toEndOf="@id/ivVehicle"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:id="@+id/tvVinNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/text_vin_number"
+                android:textColor="@color/colorLightBlack"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginStart="@dimen/_9sdp"
+                app:layout_constraintStart_toEndOf="@id/ivVehicle"
+                app:layout_constraintTop_toBottomOf="@id/tvVin"/>
+
+        <TextView
+                android:id="@+id/tvVehicleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/text_vehical_name"
+                android:textColor="@color/colorText"
+                android:fontFamily="@font/roboto_italic"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_9sdp"
+                app:layout_constraintStart_toEndOf="@id/ivVehicle"
+                app:layout_constraintTop_toBottomOf="@id/tvVinNumber"/>
+
+        <Button
+                android:id="@+id/btnFindCar"
+                style="@style/ButtonStyleGreen"
+                android:text="@string/find_car"
+                app:layout_constraintStart_toStartOf="@id/tvVehicleName"
+                app:layout_constraintTop_toBottomOf="@id/tvVehicleName"
+                app:layout_constraintBottom_toBottomOf="@id/viewBottom"/>
+
+        <View
+                android:id="@+id/viewBottom"
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:background="@color/colorDivider"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_9sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnFindCar"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
+

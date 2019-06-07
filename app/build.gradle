@@ -23,6 +23,43 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "MODE"
+
+    productFlavors {
+
+        company {
+            // Assigns this product flavor to the "MODE" flavor dimension.
+            dimension "MODE"
+//            applicationId "com.oit.lotspot"
+//            applicationIdSuffix ".company"
+            versionCode 1
+            versionName "1.0.1"
+//            versionNameSuffix "-comapny"
+            getProps('./config/company.props').each { p ->
+                buildConfigField 'String', p.key, p.value
+            }
+        }
+
+        trucker {
+            // Assigns this product flavor to the "MODE" flavor dimension.
+            dimension "MODE"
+            applicationId "com.oit.lotspotter"
+            //     applicationIdSuffix ".trucker"
+            versionCode 1
+            versionName "1.0.1"
+//            versionNameSuffix "-trucker"
+            getProps('./config/trucker.props').each { p ->
+                buildConfigField 'String', p.key, p.value
+            }
+        }
+    }
+}
+
+def getProps(path) {
+    Properties props = new Properties()
+    props.load(new FileInputStream(file(path)))
+    return props
 }
 
 dependencies {

@@ -1,0 +1,4 @@
+# Configs for "company" productFlavor
+MODE = "COMPANY"
+
+USER_ROLE = "company"

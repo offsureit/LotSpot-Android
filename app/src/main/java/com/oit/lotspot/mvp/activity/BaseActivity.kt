@@ -138,7 +138,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
         // On pressing dialog button
         alertDialog.setPositiveButton(getString(R.string.request_admin)) { dialog, _ ->
             dialog.cancel()
-            // clearToken()
+//            clearToken()
             startActivity(Intent(this@BaseActivity, SubmitRequestActivity::class.java))
         }
         alertDialog.setNegativeButton(getString(R.string.text_cancel)) { dialog, _ ->
@@ -375,7 +375,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
      */
     private fun showMessage(isConnected: Boolean) {
         if (!isConnected)
-            showAlertForInternet(getString(R.string.no_internet_connection))
+            showToast(getString(R.string.no_internet_connection))
     }
 
     /**

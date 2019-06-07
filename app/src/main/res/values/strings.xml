@@ -136,7 +136,7 @@
     <string name="text_subject_hint">text..</string>
     <string name="submit">Submit</string>
     <string name="title_submit_request">Submit Request</string>
-    <string name="text_empty_subject_msg">Plaese enter Subject</string>
-    <string name="text_empty_note_msg">Plaese enter Note</string>
+    <string name="text_empty_subject_msg">Please enter Subject</string>
+    <string name="text_empty_note_msg">Please enter Note</string>
 
 </resources>

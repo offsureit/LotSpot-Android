@@ -1,6 +1,5 @@
 package com.oit.lotspot.mvp.activity
 
-
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -20,7 +19,6 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.oit.lotspot.R
 import com.oit.lotspot.constants.Constants
@@ -30,6 +28,7 @@ import com.oit.lotspot.retrofit.ApiClient
 import com.oit.lotspot.retrofit.request.LoginRequestModel
 import com.oit.lotspot.retrofit.response.ErrorResponse
 import com.oit.lotspot.retrofit.response.LoginResponseModel
+import com.oit.lotspot.activity.HomeActivity
 import kotlinx.android.synthetic.main.activity_verification.*
 import java.util.concurrent.TimeUnit
 
@@ -438,8 +437,14 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
             .putBoolean(Constants.SharedPref.PREF_MSG_LONG_PRESS, true)
             .apply()
 
+        val model = Gson().fromJson(
+            SharedPreferencesManager.with(this)
+                .getString(Constants.SharedPref.PREF_USER_PROFILE, ""),
+            LoginResponseModel.LoginResponseFirstModel::class.java
+        )
+        Log.d(TAG,"Token::--> ${model.token}")
         showToast(getString(R.string.login_success_msg))
-        startActivity(Intent(this, HomeActivity::class.java))
+        startActivity(Intent(this,HomeActivity::class.java))
         finish()
     }
 

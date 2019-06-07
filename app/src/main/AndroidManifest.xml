@@ -42,30 +42,34 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
-                android:name=".mvp.activity.TagLocationMapActivity"
-                android:label="@string/title_activity_tag_location_map"/>
-        <activity
-                android:name=".mvp.activity.TagLocationActivity"
-                android:screenOrientation="portrait"/>
-        <activity
-                android:name=".mvp.activity.NavigationDrawerActivity"
-                android:screenOrientation="portrait"/>
-        <activity
-                android:name=".mvp.activity.HistoryActivity"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan"/>
-        <activity
                 android:name=".mvp.activity.BaseActivity"
                 android:screenOrientation="portrait"/>
+
         <activity
-                android:name=".mvp.activity.HomeActivity"
+                android:name=".activity.HomeActivity"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan"/>
+
+        <activity
+                android:name=".activity.HistoryActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan"/>
+
         <activity
                 android:name=".mvp.activity.VerificationActivity"
                 android:screenOrientation="portrait"/>
         <activity
                 android:name=".mvp.activity.LoginActivity"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".activity.TagLocationMapActivity"
+                android:label="@string/title_activity_tag_location_map"/>
+        <activity
+                android:name=".activity.TagLocationActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".activity.NavigationDrawerActivity"
                 android:screenOrientation="portrait"/>
         <activity
                 android:name=".mvp.activity.SplashActivity"
