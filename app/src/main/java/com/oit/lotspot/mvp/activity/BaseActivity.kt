@@ -43,6 +43,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
     private var context = this
     private var isInternetConnected: Boolean? = null
     var databaseHelper = DatabaseHelper
+    var isConnected = true
 
     val receiver = ConnectionReceiver()
 
@@ -374,6 +375,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
      * This method is called to show the toast when internet is not connected.
      */
     private fun showMessage(isConnected: Boolean) {
+        this.isConnected = isConnected
         if (!isConnected)
             showToast(getString(R.string.no_internet_connection))
     }

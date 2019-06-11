@@ -80,15 +80,16 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
 
     override fun getFilter(): android.widget.Filter {
         return object : Filter() {
+
             override fun performFiltering(query: CharSequence?): FilterResults {
                 val filterResults = Filter.FilterResults()
 
                 if (query != null && query.isNotEmpty()) {
                     val filteredList = VehicleListResponseModel()
 
-                    for (i in 0 until filteredVehicleList.data.size) {
-                        if (filteredVehicleList.data[i].vin!!.contains(query)) {
-                            filteredList.data.add(filteredVehicleList.data[i])
+                    for (i in 0 until vehicleListFirstResponseModel.data.size) {
+                        if (vehicleListFirstResponseModel.data[i].vin!!.contains(query)) {
+                            filteredList.data.add(vehicleListFirstResponseModel.data[i])
                         }
                     }
 
@@ -96,7 +97,6 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
                     filterResults.values = filteredList.data
                     Log.d("adapter", "size of searched data with query--> ${filteredList.data.size}")
                 } else {
-
                     filterResults.count = vehicleListFirstResponseModel.data.size
                     filterResults.values = vehicleListFirstResponseModel.data
                     Log.d(

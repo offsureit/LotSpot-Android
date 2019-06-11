@@ -89,6 +89,9 @@ class SubmitRequestActivity : BaseActivity(), SubmitRequestPresenter.ResponseCal
      * Call for api to submit request to admin
      */
     private fun apiHitForSubmitRequestToAdmin() {
+        if (!isConnected) {
+            showToast(getString(R.string.no_internet_connection))
+        }
         showProgressView()
         presenter.apiPostToSubmitRequest(adminRequestModel)
     }
