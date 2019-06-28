@@ -33,4 +33,8 @@ class SplashActivity : BaseActivity() {
         if (isUserLogin) startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
         else startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
     }
+
+    override fun onBackPressed() {
+
+    }
 }

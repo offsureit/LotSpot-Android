@@ -115,7 +115,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         if (currentAPIVersion >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     this,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    android.Manifest.permission.CAMERA
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
@@ -222,7 +222,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
     }
 
     /**
-     * Build a new MaterialBarcodeScanner
+     * call for scanning a barcode
      */
     private fun startScanningBarcode() {
         val materialBarcodeScanner = MaterialBarcodeScannerBuilder()
@@ -251,17 +251,6 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         setScannedVinNumber(vinNumber)
     }
 
-    private fun checkForUserSubScription(response: VehicleDetailResponseModel.VehicleDetailFirstResponseModel) {
-        val subscription = checkForSubscription()
-        if (subscription) {
-            startActivity(
-                Intent(this, TagLocationActivity::class.java)
-                    .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
-            )
-            DatabaseHelper(this).saveVehicleRecords(response.data)
-        } else showAlertForSubscription()
-    }
-
     /**
      * set scanned vin number in view
      */
@@ -284,13 +273,23 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         }
     }
 
+    private fun checkForUserSubScription(response: VehicleDetailResponseModel.VehicleDetailFirstResponseModel) {
+        val subscription = checkForSubscription()
+        if (subscription) {
+            startActivity(
+                Intent(this, TagLocationActivity::class.java)
+                    .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
+            )
+            DatabaseHelper(this).saveVehicleRecords(response.data)
+        } else showAlertForSubscription()
+    }
 
     /**
      * Call for Api Company Profile
      */
     private fun hitApiForCompanyProfile() {
         val authToken = getAuthToken()
-        Log.d(TAG, " Auth Token in HOme ::--> $authToken")
+        Log.d(TAG, " Auth Token in Home ::--> $authToken")
         presenter.apiGetForCompanyProfile(authToken)
     }
 

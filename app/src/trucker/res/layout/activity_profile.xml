@@ -36,17 +36,17 @@
     <EditText
             android:id="@+id/etName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:text="@string/name_hint"
             android:textSize="@dimen/_13ssp"
             android:enabled="false"
-            android:textColor="@color/colorLightBlack"
+            android:textColor="@color/colorSpinnerText"
             android:fontFamily="@font/roboto_regular"
             android:layout_marginStart="@dimen/_13sdp"
             android:layout_marginEnd="@dimen/_13sdp"
-            android:paddingBottom="@dimen/_12sdp"
+            android:padding="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_7sdp"
-            android:background="@drawable/background_edit_text_bottom"
+            android:background="@drawable/background_edit_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvName"/>
@@ -67,17 +67,17 @@
     <EditText
             android:id="@+id/etEmail"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:text="@string/email_hint"
             android:textSize="@dimen/_13ssp"
             android:enabled="false"
-            android:textColor="@color/colorLightBlack"
+            android:textColor="@color/colorSpinnerText"
             android:fontFamily="@font/roboto_regular"
             android:layout_marginStart="@dimen/_13sdp"
             android:layout_marginEnd="@dimen/_13sdp"
-            android:paddingBottom="@dimen/_12sdp"
+            android:padding="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_7sdp"
-            android:background="@drawable/background_edit_text_bottom"
+            android:background="@drawable/background_edit_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvEmail"/>
@@ -98,23 +98,23 @@
     <EditText
             android:id="@+id/etPhone"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:text="@string/phone_number_hint"
             android:textSize="@dimen/_13ssp"
             android:enabled="false"
-            android:textColor="@color/colorLightBlack"
+            android:textColor="@color/colorSpinnerText"
             android:fontFamily="@font/roboto_regular"
             android:layout_marginStart="@dimen/_13sdp"
             android:layout_marginEnd="@dimen/_13sdp"
-            android:paddingBottom="@dimen/_12sdp"
+            android:padding="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_7sdp"
-            android:background="@drawable/background_edit_text_bottom"
+            android:background="@drawable/background_edit_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPhone"/>
 
     <TextView
-            android:id="@+id/tvReferral"
+            android:id="@+id/tvReferralCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_13sdp"
@@ -127,13 +127,13 @@
             app:layout_constraintTop_toBottomOf="@id/etPhone"/>
 
     <EditText
-            android:id="@+id/etReferral"
+            android:id="@+id/etReferralCode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="@dimen/_13ssp"
             android:enabled="false"
-            android:textColor="@color/colorLightBlack"
+            android:textColor="@color/colorBrown"
             android:fontFamily="@font/roboto_regular"
             android:layout_marginStart="@dimen/_13sdp"
             android:layout_marginEnd="@dimen/_13sdp"
@@ -142,6 +142,37 @@
             android:background="@drawable/background_edit_text_bottom"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvReferral"/>
+            app:layout_constraintTop_toBottomOf="@id/tvReferralCode"/>
+
+    <TextView
+            android:id="@+id/tvReferralEarn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_13sdp"
+            android:textSize="@dimen/_13ssp"
+            android:text="@string/referral_earns"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:textColor="@color/colorTextBlack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etReferralCode"/>
+
+    <EditText
+            android:id="@+id/etReferralEarn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/_13ssp"
+            android:enabled="false"
+            android:textColor="@color/colorBrown"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginStart="@dimen/_13sdp"
+            android:layout_marginEnd="@dimen/_13sdp"
+            android:paddingBottom="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:background="@drawable/background_edit_text_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvReferralEarn"/>
 
 </android.support.constraint.ConstraintLayout>

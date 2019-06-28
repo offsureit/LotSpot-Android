@@ -455,7 +455,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     private fun requestPermissionsIfNotGranted() {
         when (isPermissionsGranted()) {
             true -> Handler().postDelayed(
-                { checkLocationAndGpsAndStatus() },
+                { checkLocationAndGpsStatus() },
                 1000
             )
 
@@ -463,7 +463,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         }
     }
 
-    private fun checkLocationAndGpsAndStatus() {
+    private fun checkLocationAndGpsStatus() {
         if (isPermissionsGranted())
             if (isGPSEnabled()) {
                 val isShowAgain =
@@ -653,7 +653,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
                         true -> {
                             Log.d(TAG, "Permission: Granted")
 
-                            checkLocationAndGpsAndStatus()
+                            checkLocationAndGpsStatus()
                         }
 
                         false -> requestPermissionOnDenied()
@@ -669,12 +669,12 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         when (requestCode) {
             PermissionConst.REQUEST_CODE.GPS -> {
                 if (resultCode == RESULT_OK)
-                    checkLocationAndGpsAndStatus()
+                    checkLocationAndGpsStatus()
             }
 
             PermissionConst.REQUEST_CODE.SETTINGS -> {
                 checkPermission = true
-                checkLocationAndGpsAndStatus()
+                checkLocationAndGpsStatus()
             }
         }
     }

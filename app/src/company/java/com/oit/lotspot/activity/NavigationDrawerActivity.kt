@@ -96,15 +96,6 @@ open class NavigationDrawerActivity : BaseActivity(), NavigationPresenter.Respon
     }
 
     /**
-     * Call for Api logout
-     */
-    private fun clickedForLogout() {
-        showProgressView()
-        val authToken = getAuthToken()
-        presenter.apiPostToLogoutUser(authToken)
-    }
-
-    /**
      * Show Alert dialog for Logout
      */
     private fun showAlertForLogout() {
@@ -119,6 +110,15 @@ open class NavigationDrawerActivity : BaseActivity(), NavigationPresenter.Respon
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
+    }
+
+    /**
+     * Call for Api logout
+     */
+    private fun clickedForLogout() {
+        showProgressView()
+        val authToken = getAuthToken()
+        presenter.apiPostToLogoutUser(authToken)
     }
 
     /**
