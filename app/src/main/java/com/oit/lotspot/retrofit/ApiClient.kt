@@ -9,7 +9,8 @@ object ApiClient {
 
     val BASE_URL_LIVE = "http://103.212.235.82/lotspot/"
 
-    val BASE_URL_LINKS = "http://103.36.77.34/lotspot/"
+  //  val BASE_URL_LINKS = "http://103.36.77.34/lotspot/"
+   // val BASE_URL_LINKS = "http://103.212.235.82/lotspot/"
 
     val DIRECTIONS_API_LINK = "https://maps.googleapis.com/maps/api/"
 

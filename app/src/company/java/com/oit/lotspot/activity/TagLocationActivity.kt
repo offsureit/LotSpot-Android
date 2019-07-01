@@ -72,13 +72,16 @@ class TagLocationActivity : BaseActivity() {
             when (view.id) {
                 R.id.ivMenu -> onBackPressed()
 
-                R.id.btnLocation -> startActivity(
-                    Intent(this, TagLocationMapActivity::class.java)
-                        .putExtra(
-                            Constants.App.Bundle_Key.TAG_LOCATION_MAP,
-                            Gson().toJson(vehicleDetailResponseModel)
-                        ).putExtra(Constants.App.Bundle_Key.IS_FROM_TAG_LOCATION, false)
-                )
+                R.id.btnLocation -> {
+                    startActivity(
+                        Intent(this, TagLocationMapActivity::class.java)
+                            .putExtra(
+                                Constants.App.Bundle_Key.TAG_LOCATION_MAP,
+                                Gson().toJson(vehicleDetailResponseModel)
+                            ).putExtra(Constants.App.Bundle_Key.IS_FROM_TAG_LOCATION, false)
+                    )
+                    finish()
+                }
             }
     }
 

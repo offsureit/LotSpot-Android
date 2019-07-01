@@ -27,6 +27,7 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
     private var loadMore = false
     var linearLayoutManager = LinearLayoutManager(this)
     var adapter = HistoryAdapter(this@HistoryActivity, this)
+    private var vehicleList = VehicleListResponseModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +76,10 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
         if (shouldProceedClick())
             when (view.id) {
                 R.id.ivSearch -> enableDisableViews()
-                R.id.ivDelete -> showAlertForDelete(getString(R.string.text_delete_all), null)
+                R.id.ivDelete -> {
+                    if (vehicleList.data.size != 0) showAlertForDelete(getString(R.string.text_delete_all), null)
+                    else showAlertForEmptyList(getString(R.string.text_empty_histroy))
+                }
                 R.id.ivBack -> onBackPressed()
                 R.id.tvCancel -> clickedForCancel()
                 R.id.ivClear -> clickForClearSearchedText()
@@ -212,7 +216,9 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
             showProgressView()
             if (vehicleId == null) {
                 hitApiToDeleteAllVehiclesList()
-            } else hitApiToDeleteVehicleFromList(vehicleId!!)
+            } else {
+                hitApiToDeleteVehicleFromList(vehicleId!!)
+            }
             dialog.cancel()
 
         }
@@ -251,6 +257,7 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
      * @param response is successful response from Api
      */
     override fun onSuccessVehicleList(responseModel: VehicleListResponseModel) {
+        this.vehicleList = responseModel
         hideProgressDialog()
         if (responseModel.data.isNotEmpty()) {
             if (responseModel.last_page > responseModel.current_page) {
@@ -283,10 +290,14 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
      */
     override fun onSuccessVehicleDelete(response: VehicleDeleteResponse) {
         hideProgressDialog()
-        showToast(response.message)
-        if (response.message.equals(getString(R.string.delete_response_msg))) {
+        if (response.message == getString(R.string.delete_response_msg)) {
+            showToast(getString(R.string.delete_all_response_msg))
+            this.vehicleList.data.clear()
             adapter.clearVehicleHistory()
-        } else adapter.deleteItem(this.vehicleId)
+        } else {
+            showToast(response.message)
+            adapter.deleteItem(this.vehicleId)
+        }
     }
 
     /**

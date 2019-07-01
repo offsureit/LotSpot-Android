@@ -201,7 +201,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         }
         alertDialog.setPositiveButton(getString(R.string.text_renew)) { dialog, _ ->
             dialog.dismiss()
-            openWebPage(ApiClient.BASE_URL_LINKS + Constants.App.Api.USER_LOGIN)
+            openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.USER_LOGIN)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()

@@ -55,6 +55,7 @@
     <string name="text_hint_search_vin">Search VIN</string>
     <string name="text_empty_histroy">Your vehicle history list is empty</string>
     <string name="delete_response_msg">Deleted All records</string>
+    <string name="delete_all_response_msg">Deleted all the records</string>
 
     <!--Tag Location -->
     <string name="text_model">Year/Make/Model</string>
