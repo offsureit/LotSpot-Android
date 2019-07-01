@@ -44,6 +44,7 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
 
     internal fun updateVehicleList(vehicleResponseModel: VehicleListResponseModel) {
         this.vehicleListFirstResponseModel.data.clear()
+        this.filteredVehicleList.data.clear()
         this.vehicleListFirstResponseModel = vehicleResponseModel
 
         this.filteredVehicleList.data.apply {

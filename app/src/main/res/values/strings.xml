@@ -71,7 +71,7 @@
     <!-- Tag Location Map -->
     <string name="text_title_map">Tag or find location</string>
     <string name="text_title_vehicle_location">Vehicle Location</string>
-    <string name="text_location_save_msg">Vehicle location saved Successfully</string>
+    <string name="text_location_save_msg">Vehicle location saved successfully</string>
     <string name="text_distance">Distance:</string>
     <string name="distance">12.099</string>
     <string name="text_marker_title">
