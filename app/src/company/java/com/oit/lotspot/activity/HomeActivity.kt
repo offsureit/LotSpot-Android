@@ -265,6 +265,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 Intent(this, TagLocationActivity::class.java)
                     .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(arrayList[index]))
             )
+            finish()
         } else {
             Handler().postDelayed({
                 Log.d(TAG, " Api hit for Get details postDelayed")
@@ -280,6 +281,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 Intent(this, TagLocationActivity::class.java)
                     .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
             )
+            finish()
             DatabaseHelper(this).saveVehicleRecords(response.data)
         } else showAlertForSubscription()
     }
