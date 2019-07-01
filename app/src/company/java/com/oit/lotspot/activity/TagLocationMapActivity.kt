@@ -172,7 +172,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     }
 
     /**
-     * fetch address from user current location if user does not set locat
+     * fetch address from user current location if user does not set location
      */
     private fun fetchAddress() {
         if (locationAddress == null)
@@ -245,7 +245,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     }
 
     /**
-     * show marker on current location
+     * get current location
      */
     private fun getCurrentLocation(): LatLng {
         var latLng = LatLng(0.0, 0.0)

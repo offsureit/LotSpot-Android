@@ -43,6 +43,7 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
     }
 
     internal fun updateVehicleList(vehicleResponseModel: VehicleListResponseModel) {
+        this.vehicleListFirstResponseModel.data.clear()
         this.vehicleListFirstResponseModel = vehicleResponseModel
 
         this.filteredVehicleList.data.apply {
@@ -60,6 +61,7 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
         } ?: -1
         if (index > -1) {
             filteredVehicleList.data.removeAt(index)
+            vehicleListFirstResponseModel.data.removeAt(index)
             notifyItemRemoved(index)
         }
         return index

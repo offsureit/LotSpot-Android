@@ -47,6 +47,7 @@ class LoginActivity : BaseActivity() {
                         val intent = Intent(this, VerificationActivity::class.java)
                         intent.putExtra(Constants.App.CONTACT, "+" + spCountryCode.selectedCountryCode + etNumber.text)
                         this.startActivity(intent)
+                        finish()
                     }
                 }
 
