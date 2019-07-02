@@ -458,7 +458,7 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
         responseFailure(errorResponse)
     }
 
-    override fun onBackPressed()  {
+    override fun onBackPressed() {
         finish()
         startActivity(Intent(this, LoginActivity::class.java))
     }
