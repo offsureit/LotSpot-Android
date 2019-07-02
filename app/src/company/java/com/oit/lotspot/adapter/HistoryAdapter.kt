@@ -65,12 +65,14 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
      * remove single vehicle from All vehicle history
      */
     internal fun deleteItem(vehicleId: Int): Int {
+        var model: VehicleDetailResponseModel.VehicleDetailDataResponseModel? = null
         val index = filteredVehicleList.data.firstOrNull { it.id == vehicleId }?.let {
             filteredVehicleList.data.indexOf(it)
         } ?: -1
         if (index > -1) {
-            filteredVehicleList.data.removeAt(index)
-            vehicleListFirstResponseModel.data.removeAt(index)
+            model = filteredVehicleList.data[index]
+            vehicleListFirstResponseModel.data.remove(model)
+            filteredVehicleList.data.remove(model)
             notifyItemRemoved(index)
         }
         return index
@@ -90,7 +92,7 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
             "size", "size of adapter list 2 ${filteredVehicleList.data
                 .size}"
         )
-        holder.findView(filteredVehicleList, historyItemInterface)
+        holder.bindView(filteredVehicleList, historyItemInterface)
     }
 
     override fun getFilter(): android.widget.Filter {

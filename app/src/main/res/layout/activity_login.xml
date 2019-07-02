@@ -59,6 +59,8 @@
                 android:inputType="number"
                 android:background="@null"
                 android:maxLength="14"
+                android:hint="@string/text_hint_number"
+                android:textColorHint="@color/colorSpinnerText"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/view"
@@ -97,7 +99,7 @@
                 android:textSize="@dimen/_10ssp"
                 android:singleLine="true"
                 android:text="@string/text_description"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorBlue_Dark"
                 android:fontFamily="@font/roboto_regular"/>
 
         <TextView

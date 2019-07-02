@@ -442,9 +442,9 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
                 .getString(Constants.SharedPref.PREF_USER_PROFILE, ""),
             LoginResponseModel.LoginResponseFirstModel::class.java
         )
-        Log.d(TAG,"Token::--> ${model.token}")
+        Log.d(TAG, "Token::--> ${model.token}")
         showToast(getString(R.string.login_success_msg))
-        startActivity(Intent(this,HomeActivity::class.java))
+        startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
 
@@ -458,5 +458,8 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
         responseFailure(errorResponse)
     }
 
-    override fun onBackPressed() = finish()
+    override fun onBackPressed()  {
+        finish()
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
 }

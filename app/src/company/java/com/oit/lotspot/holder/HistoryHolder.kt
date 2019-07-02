@@ -21,7 +21,7 @@ import java.lang.Exception
 class HistoryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
-    fun findView(
+    fun bindView(
         vehicleResponseModel: VehicleListResponseModel,
         historyItemInterface: HistoryItemInterface
     ) {
