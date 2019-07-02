@@ -5,20 +5,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    val BASE_URL = "http://103.36.77.34/lotspot/public/"
+    val BASE_URL = "http://lotspotterapp.com/"
 
-    val BASE_URL_LIVE = "http://103.212.235.82/lotspot/"
+    val BASE_URL_LIVE = BASE_URL + "backend/public/"
 
-  //  val BASE_URL_LINKS = "http://103.36.77.34/lotspot/"
-   // val BASE_URL_LINKS = "http://103.212.235.82/lotspot/"
+    val BASE_URL_PRIVACY = "$BASE_URL#/privacy-policy"
+
+    val BASE_URL_TERMS = "$BASE_URL#/terms-conditions"
 
     val DIRECTIONS_API_LINK = "https://maps.googleapis.com/maps/api/"
 
-    val BASE_URL_SIGNUP = "http://103.212.235.82/lotspot/site/#/user/login"
+    val BASE_URL_SIGNUP = "$BASE_URL#/user/signup"
 
     private var retrofit: Retrofit? = null
     private var retrofit2: Retrofit? = null
-   // private var retrofit_live: Retrofit? = null
 
     val client: Retrofit
         get() {
@@ -41,17 +41,5 @@ object ApiClient {
             }
             return retrofit2!!
         }
-
-//    val client_live: Retrofit
-//        get() {
-//            if (retrofit_live == null) {
-//                retrofit_live = Retrofit.Builder()
-//                    .baseUrl(BASE_URL_LIVE)
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .build()
-//            }
-//            return retrofit_live!!
-//        }
-
 }
 

@@ -42,15 +42,23 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
         return filteredVehicleList.data.size
     }
 
+    /**
+     * update Vehicle Response list
+     */
     internal fun updateVehicleList(vehicleResponseModel: VehicleListResponseModel) {
-        this.vehicleListFirstResponseModel.data.clear()
-        this.filteredVehicleList.data.clear()
-        this.vehicleListFirstResponseModel = vehicleResponseModel
 
+        val startPosition = this.vehicleListFirstResponseModel.data.size
+        this.vehicleListFirstResponseModel.data.addAll(vehicleResponseModel.data)
+
+        this.filteredVehicleList.data.clear()
         this.filteredVehicleList.data.apply {
             addAll(vehicleListFirstResponseModel.data)
         }
-        notifyDataSetChanged()
+        Log.d(
+            "size", "size of adapter list 1 ${this.vehicleListFirstResponseModel.data
+                .size}"
+        )
+        notifyItemRangeInserted(startPosition, vehicleResponseModel.data.size)
     }
 
     /**
@@ -78,6 +86,10 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
     }
 
     override fun onBindViewHolder(holder: HistoryHolder, position: Int) {
+        Log.d(
+            "size", "size of adapter list 2 ${filteredVehicleList.data
+                .size}"
+        )
         holder.findView(filteredVehicleList, historyItemInterface)
     }
 

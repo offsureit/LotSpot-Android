@@ -20,7 +20,7 @@ object Constants {
         object Api {
             const val TERMS = "site/#/terms-conditions"
             const val PRIVACY = "site/#/privacy-policy"
-            const val USER_LOGIN = "site/#/user/login"
+            const val USER_PROFILE = "#/dashboard/profile"
         }
     }
 

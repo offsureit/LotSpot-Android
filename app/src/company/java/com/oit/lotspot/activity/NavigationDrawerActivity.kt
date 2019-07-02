@@ -61,9 +61,9 @@ open class NavigationDrawerActivity : BaseActivity(), NavigationPresenter.Respon
             when (view.id) {
                 R.id.llHistory -> startActivity(Intent(this, HistoryActivity::class.java))
 
-                R.id.llPrivacy -> openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.PRIVACY)
+                R.id.llPrivacy -> openWebPage(ApiClient.BASE_URL_PRIVACY)
 
-                R.id.llTerms -> openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.TERMS)
+                R.id.llTerms -> openWebPage(ApiClient.BASE_URL_TERMS)
 
                 R.id.clLogout -> showAlertForLogout()
 

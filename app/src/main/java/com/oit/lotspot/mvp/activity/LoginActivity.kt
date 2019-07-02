@@ -55,7 +55,7 @@ class LoginActivity : BaseActivity() {
                     startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse(ApiClient.BASE_URL_LIVE + Constants.App.Api.TERMS)
+                            Uri.parse(ApiClient.BASE_URL_TERMS)
                         )
                     )
                 }

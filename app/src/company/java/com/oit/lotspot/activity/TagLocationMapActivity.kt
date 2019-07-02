@@ -425,7 +425,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         }
         alertDialog.setPositiveButton(getString(R.string.text_buy)) { dialog, _ ->
             dialog.dismiss()
-            openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.USER_LOGIN)
+            openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.USER_PROFILE)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
@@ -443,7 +443,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
         }
         alertDialog.setPositiveButton(getString(R.string.text_renew)) { dialog, _ ->
             dialog.dismiss()
-            openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.USER_LOGIN)
+            openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.USER_PROFILE)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()

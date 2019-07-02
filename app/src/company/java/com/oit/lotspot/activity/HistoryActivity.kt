@@ -118,7 +118,7 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
                 searchView.text.clear()
                 searchView.clearFocus()
                 //   hideSoftKeyboard(searchView)
-                hitApiToGetVehicleList()
+                adapter.filter.filter("")
             }
 
             false -> {
