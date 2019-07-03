@@ -60,10 +60,8 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
 
     private var routePolyLine: Polyline? = null
     private var routePathList: List<LatLng>? = null
-    private var latLngBounds: LatLngBounds.Builder? = null
 
     private var location: Location? = null
-    private var mylocation: Location? = null
 
     private var checkPermission: Boolean = true
     private var locationDialog: android.support.v7.app.AlertDialog? = null
@@ -176,7 +174,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
      */
     private fun fetchAddress() {
         if (locationAddress == null)
-            locationAddress = geoCoder!!.getFromLocation(location!!.latitude, location!!.longitude, 1)
+            locationAddress = geoCoder!!.getFromLocation(marker!!.position.latitude, marker!!.position.longitude, 1)
     }
 
     /**

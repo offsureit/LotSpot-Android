@@ -32,7 +32,7 @@ class HistoryAdapter(private var context: HistoryActivity, private var historyIt
 
         if (itemView.clDelete.layoutParams != null) {
             itemView.clDelete.layoutParams.width = (metrics.widthPixels / 3.3).toInt()
-            itemView.clDelete.layoutParams.height = (metrics.heightPixels / 5.5).toInt()
+            itemView.requestLayout()
         }
 
         return HistoryHolder(itemView)

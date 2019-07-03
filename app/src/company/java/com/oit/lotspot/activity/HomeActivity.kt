@@ -265,7 +265,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 Intent(this, TagLocationActivity::class.java)
                     .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(arrayList[index]))
             )
-            finish()
+//            finish()
         } else {
             Handler().postDelayed({
                 Log.d(TAG, " Api hit for Get details postDelayed")
@@ -281,7 +281,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 Intent(this, TagLocationActivity::class.java)
                     .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
             )
-            finish()
+//            finish()
             DatabaseHelper(this).saveVehicleRecords(response.data)
         } else showAlertForSubscription()
     }
@@ -332,6 +332,11 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
      */
     override fun onSuccessProfile(response: LoginResponseModel.LoginResponseProfileModel) {
 
+    }
+
+    override fun onBackPressed() {
+        finish()
+        finish()
     }
 }
 

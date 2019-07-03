@@ -80,7 +80,7 @@ class TagLocationActivity : BaseActivity() {
                                 Gson().toJson(vehicleDetailResponseModel)
                             ).putExtra(Constants.App.Bundle_Key.IS_FROM_TAG_LOCATION, false)
                     )
-                    finish()
+                   // finish()
                 }
             }
     }
