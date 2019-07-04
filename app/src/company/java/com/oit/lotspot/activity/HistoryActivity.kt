@@ -47,9 +47,11 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
     }
 
     private fun initUi() {
-        ivAppTitle.visibility = View.VISIBLE
+        tvTitle.visibility = View.VISIBLE
         ivSearch.visibility = View.VISIBLE
         ivDelete.visibility = View.VISIBLE
+
+        tvTitle.text = getString(R.string.text_history)
     }
 
     /**
@@ -94,7 +96,7 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
         tvCancel.visibility = View.VISIBLE
         ivSearch.visibility = View.GONE
         ivDelete.visibility = View.GONE
-        ivAppTitle.visibility = View.GONE
+        tvTitle.visibility = View.GONE
 
         initSearchView(false)
     }
@@ -105,7 +107,7 @@ class HistoryActivity : BaseActivity(), HistoryItemInterface, HistoryPresenter.R
     private fun clickedForCancel() {
         ivSearch.visibility = View.VISIBLE
         ivDelete.visibility = View.VISIBLE
-        ivAppTitle.visibility = View.VISIBLE
+        tvTitle.visibility = View.VISIBLE
         clSearch.visibility = View.GONE
         tvCancel.visibility = View.GONE
 

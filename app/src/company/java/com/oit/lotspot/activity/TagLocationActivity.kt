@@ -26,7 +26,9 @@ class TagLocationActivity : BaseActivity() {
     }
 
     private fun initUi() {
-        ivAppTitle.visibility = View.VISIBLE
+        ivAppTitle.visibility = View.GONE
+        tvTitle.visibility = View.VISIBLE
+        tvTitle.text = getString(R.string.text_title)
     }
 
     private fun getIntentData() {

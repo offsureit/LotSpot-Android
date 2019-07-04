@@ -24,6 +24,7 @@
             android:layout_height="@dimen/_178sdp"
             android:src="@drawable/car"
             android:scaleType="centerCrop"
+            android:layout_marginTop="@dimen/_3sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clToolbar"

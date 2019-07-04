@@ -38,6 +38,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
     private lateinit var presenter: HomePresenter
     private var vinNumber = ""
     private var vehicleDetailRequest = VehicleDetailRequest()
+    private var subscription = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -201,7 +202,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
         }
         alertDialog.setPositiveButton(getString(R.string.text_renew)) { dialog, _ ->
             dialog.dismiss()
-            openWebPage(ApiClient.BASE_URL_LIVE + Constants.App.Api.USER_PROFILE)
+            openWebPage(ApiClient.BASE_URL + Constants.App.Api.USER_PROFILE)
         }
         alertDialog.setCancelable(true)
         alertDialog.show()
@@ -252,7 +253,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
     }
 
     /**
-     * set scanned vin number in view
+     * call to check scanned vin number exist in database
      */
     private fun setScannedVinNumber(vinNumber: String?) {
         this.vinNumber = vinNumber!!
@@ -265,10 +266,8 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 Intent(this, TagLocationActivity::class.java)
                     .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(arrayList[index]))
             )
-//            finish()
         } else {
             Handler().postDelayed({
-                Log.d(TAG, " Api hit for Get details postDelayed")
                 hitApiToGetVehicleDetails()
             }, 600)
         }
@@ -281,7 +280,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
                 Intent(this, TagLocationActivity::class.java)
                     .putExtra(Constants.App.Bundle_Key.TAG_LOCATION, Gson().toJson(response.data))
             )
-//            finish()
+
             DatabaseHelper(this).saveVehicleRecords(response.data)
         } else showAlertForSubscription()
     }
