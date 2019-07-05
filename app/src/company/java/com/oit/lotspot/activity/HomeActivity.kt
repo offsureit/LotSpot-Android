@@ -242,20 +242,20 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
     }
 
     /**
-     * update vin number in request model for api
+     * update vin number in request model for api get Vehicle Details
      */
     private fun updateVinNumber(vinNumber: String) {
         this.vinNumber = vinNumber
         vehicleDetailRequest.apply {
             vin = vinNumber
         }
-        setScannedVinNumber(vinNumber)
+        checkForVinExistInDatabase(vinNumber)
     }
 
     /**
      * call to check scanned vin number exist in database
      */
-    private fun setScannedVinNumber(vinNumber: String?) {
+    private fun checkForVinExistInDatabase(vinNumber: String?) {
         this.vinNumber = vinNumber!!
         val arrayList = DatabaseHelper(this).getVehicleDetail()
         val index = arrayList.firstOrNull { it.vin == vinNumber }?.let {
