@@ -59,7 +59,7 @@
     <string name="delete_all_response_msg">Deleted all the records</string>
 
     <!--Tag Location -->
-    <string name="text_model">Year/Make/Model</string>
+    <string name="text_model">Year / Make / Model:</string>
     <string name="text_lat_lng">LAT/LONG</string>
     <string name="text_tag_location">Tag Location</string>
     <string name="title_activity_tag_location_map">Map</string>

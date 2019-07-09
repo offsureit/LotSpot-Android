@@ -288,7 +288,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
                 )
             ).icon(
                 BitmapDescriptorFactory.fromResource(
-                    R.drawable.mask_group
+                    R.drawable.map_pin_silhouette
                 )
             )
         )
