@@ -35,7 +35,7 @@ import com.oit.lotspot.retrofit.response.ErrorResponse
 import java.math.BigDecimal
 
 
-open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityReceiverListener {
+open class BaseActivity() : AppCompatActivity(), ConnectionReceiver.ConnectivityReceiverListener {
 
     private var progressDialog: ProgressDialog? = null
     private var lastClickedMilliseconds: Long = 0L
@@ -366,9 +366,9 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
 
 
     private fun registerdReceiver() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+//        }
     }
 
     /**
@@ -389,6 +389,7 @@ open class BaseActivity : AppCompatActivity(), ConnectionReceiver.ConnectivityRe
 
     override fun onDestroy() {
         super.onDestroy()
-//        unregisterReceiver(receiver)
+
+        unregisterReceiver(receiver)
     }
 }

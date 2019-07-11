@@ -112,7 +112,7 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
             tvSave.visibility = View.VISIBLE
             clDistance.visibility = View.GONE
         }
-        gpsTracker = GPSTracker(this, this)
+        gpsTracker = GPSTracker(this@TagLocationMapActivity, this)
         initLatLngBounds()
     }
 
@@ -248,11 +248,15 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
     private fun getCurrentLocation(): LatLng {
         var latLng = LatLng(0.0, 0.0)
         location = gpsTracker.getLocation()
+        Log.d(TAG, "Debug starts at 101")
 
         if (location != null) {
+            Log.d(TAG, "Debug starts at 102")
             latLng = LatLng(location!!.latitude, location!!.longitude)
+            Log.d(TAG,"Debug starts at 102 lat---> ${location!!.latitude} ,,,  Longitude --> ${location!!.longitude}")
         }
 //        else gpsTracker.showAlertForSettings()
+        Log.d(TAG, "Debug starts at 103")
 
         moveMarkerOnCurrentLocation(latLng)
         return latLng
@@ -262,13 +266,20 @@ open class TagLocationMapActivity : BaseActivity(), GoogleMap.OnMapClickListener
      * show marker on user current location
      */
     private fun moveMarkerOnCurrentLocation(latLng: LatLng) {
-        if (marker == null)
+        if (marker == null){
+            Log.d(TAG, "Debug starts at 104")
+
             marker = mMap!!.addMarker(
                 MarkerOptions().position(latLng).title(getString(R.string.text_me))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
             )
-        else marker!!.position = latLng
+        }
+        else{
+            Log.d(TAG, "Debug starts at 105")
+            marker!!.position = latLng
+        }
 
+        Log.d(TAG, "Debug starts at 106")
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 250F))
 
     }

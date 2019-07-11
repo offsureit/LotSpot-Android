@@ -13,11 +13,13 @@
     <string name="text_country_code">+1</string>
     <string name="text_empty_number_msg">Please enter phone number</string>
     <string name="text_valid_length">Please enter valid number</string>
+    <string name="no_internet">No Internet Connection</string>
 
     <!--Home Activity -->
     <string name="text_title_home">Space(Company)</string>
     <string name="text_hint_vin">Enter VIN Number</string>
     <string name="empty_vin_msg">Please enter vin number</string>
+    <string name="empty_vin">Please Enter VIN</string>
     <string name="text_scan">Scan</string>
     <string name="text">Text</string>
 

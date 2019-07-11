@@ -19,10 +19,12 @@ import android.util.Log
 import com.oit.lotspot.constants.PermissionConst
 
 
-class GPSTracker(private val mContext: Activity,private val locationCHanged : LocationChangeInterface) : Service(), LocationListener {
+class GPSTracker : Service, LocationListener {
 
     private var TAG = GPSTracker::class.java.simpleName
     private var context = this
+    private var mContext: Activity? = null
+    private var locationCHanged: LocationChangeInterface? = null
 
     // Flag for GPS status
     internal var isGPSEnabled = false
@@ -40,39 +42,57 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
     // Declaring a Location Manager
     protected var locationManager: LocationManager? = null
 
-    init {
+//    init {
+//
+//    }
+
+
+    public constructor() : super()
+
+    constructor(mContext: Activity, locationCHanged: LocationChangeInterface) : this() {
+        this.mContext = mContext
+        this.locationCHanged = locationCHanged
+
         getLocation()
     }
 
 
-     fun getLocation(): Location? {
+    fun getLocation(): Location? {
         try {
-            locationManager = mContext.getSystemService(LOCATION_SERVICE) as LocationManager?
+
+            Log.d(TAG, "Debug starts at 0")
+            locationManager = mContext!!.getSystemService(LOCATION_SERVICE) as LocationManager?
 
             // Getting GPS status
             isGPSEnabled = locationManager!!
                 .isProviderEnabled(LocationManager.GPS_PROVIDER)
 
+            Log.d(TAG, "Debug starts at 1")
             // Getting network status
             isNetworkEnabled = locationManager!!
                 .isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
+            Log.d(TAG, "Debug starts at 2")
             if (!isGPSEnabled && !isNetworkEnabled) {
+                Log.d(TAG, "Debug starts at 3")
                 // No network provider is enabled
             } else {
+                Log.d(TAG, "Debug starts at 4")
                 this.canGetLocation = true
                 if (isNetworkEnabled) {
+                    Log.d(TAG, "Debug starts at 5")
                     if (ContextCompat.checkSelfPermission(
-                            mContext,
+                            mContext!!,
                             android.Manifest.permission.ACCESS_COARSE_LOCATION
                         ) != PackageManager.PERMISSION_GRANTED
                     ) {
 
                         ActivityCompat.requestPermissions(
-                            mContext,
+                            mContext!!,
                             PermissionConst.PERMISSION.LOCATION_ARRAY,
                             PermissionConst.REQUEST_CODE.LOCATION
                         )
+                        Log.d(TAG, "Debug starts at 6")
                     }
                     locationManager!!.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER,
@@ -81,25 +101,33 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
                         this
                     )
                     Log.d("Network", "Network")
+                    Log.d(TAG, "Debug starts at 6")
                     if (locationManager != null) {
+                        Log.d(TAG, "Debug starts at 7")
                         location = locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                         if (location != null) {
+
                             latitude = location!!.latitude
                             longitude = location!!.longitude
+                            Log.d(TAG, "Debug starts at 7i ,, latitude = $latitude ... $longitude")
                         }
                     }
                 }
+                Log.d(TAG, "Debug starts at 8")
                 // If GPS enabled, get latitude/longitude using GPS Services
                 if (isGPSEnabled) {
+                    Log.d(TAG, "Debug starts at 9")
                     if (location == null) {
+                        Log.d(TAG, "Debug starts at 10")
                         if (ContextCompat.checkSelfPermission(
-                                mContext,
+                                mContext!!,
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION
                             ) != PackageManager.PERMISSION_GRANTED
                         ) {
+                            Log.d(TAG, "Debug starts at 11")
 
                             ActivityCompat.requestPermissions(
-                                mContext,
+                                mContext!!,
                                 PermissionConst.PERMISSION.LOCATION_ARRAY,
                                 PermissionConst.REQUEST_CODE.LOCATION
                             )
@@ -110,8 +138,10 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
                             MIN_DISTANCE_CHANGE_FOR_UPDATES.toFloat(),
                             this
                         )
+                        Log.d(TAG, "Debug starts at 12")
                         Log.d("GPS Enabled", "GPS Enabled")
                         if (locationManager != null) {
+                            Log.d(TAG, "Debug starts at 13")
                             location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                             if (location != null) {
                                 latitude = location!!.latitude
@@ -123,6 +153,7 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.d(TAG, "Debug starts at 14")
         }
 
         return location
@@ -179,7 +210,7 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
      * On pressing the Settings button it will launch Settings Options.
      */
     fun showAlertForSettings() {
-        val alertDialog = AlertDialog.Builder(mContext)
+        val alertDialog = AlertDialog.Builder(mContext!!)
 
         // Setting Dialog Title
         alertDialog.setTitle("GPS is settings")
@@ -190,7 +221,7 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
         // On pressing the Settings button.
         alertDialog.setPositiveButton("Settings", DialogInterface.OnClickListener { dialog, which ->
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            mContext.startActivity(intent)
+            mContext!!.startActivity(intent)
         })
 
         // On pressing the cancel button
@@ -203,8 +234,8 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
 
 
     override fun onLocationChanged(location: Location) {
-        Log.d(TAG,"On Location Change Listener")
-        locationCHanged.myLocationChanged(location)
+        Log.d(TAG, "On Location Change Listener")
+        locationCHanged!!.myLocationChanged(location)
     }
 
 
@@ -230,7 +261,7 @@ class GPSTracker(private val mContext: Activity,private val locationCHanged : Lo
         private val MIN_TIME_BW_UPDATES = (1000 * 60 * 1).toLong() // 1 minute
     }
 
-    interface LocationChangeInterface{
+    interface LocationChangeInterface {
         fun myLocationChanged(location: Location)
     }
 }

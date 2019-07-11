@@ -8,6 +8,21 @@ repositories {
 }
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file('/Users/lynix/Downloads/LotSpot/LotSpot-Android/app/release.keystore')
+            storePassword 'android'
+            keyAlias = 'LotSpot'
+            keyPassword 'android'
+        }
+        companyRelease {
+            storeFile file('/Users/lynix/Downloads/LotSpot/LotSpot-Android/app/release.keystore')
+            storePassword 'android'
+            keyAlias = 'LotSpot'
+            keyPassword 'android'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.oit.lotspot"
@@ -33,7 +48,7 @@ android {
             dimension "MODE"
 //            applicationId "com.oit.lotspot"
 //            applicationIdSuffix ".company"
-            versionCode 1
+            versionCode 2
             versionName "1.0.1"
 //            versionNameSuffix "-comapny"
             getProps('./config/company.props').each { p ->
@@ -127,6 +142,11 @@ dependencies {
 
     // For Image loading
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    /**
+     * for force update
+     */
+   // implementation 'org.jsoup:jsoup:1.11.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

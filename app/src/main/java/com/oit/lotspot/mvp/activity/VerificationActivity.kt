@@ -269,9 +269,11 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
     }
 
     private fun authenticateOtp() {
-        showProgressView()
-        val credential = PhoneAuthProvider.getCredential(verificationId, enteredOtpStringBuilder.toString())
-        signInWithPhoneAuthCredential(credential)
+        if (isConnected) {
+            showProgressView()
+            val credential = PhoneAuthProvider.getCredential(verificationId, enteredOtpStringBuilder.toString())
+            signInWithPhoneAuthCredential(credential)
+        } else showToast(getString(R.string.no_internet))
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential?) {
@@ -372,7 +374,7 @@ class VerificationActivity : BaseActivity(), LoginPresenter.ResponseCallBack {
             hideProgressDialog()
             showToast("${e!!.message}")
             setResult(Activity.RESULT_CANCELED)
-            finish()
+            //  finish()
         }
 
         override fun onCodeSent(verificationId: String?, token: PhoneAuthProvider.ForceResendingToken?) {

@@ -102,7 +102,7 @@ class HomeActivity : NavigationDrawerActivity(), HomePresenter.ResponseCallBack 
      */
     private fun validateData(): Boolean {
         if (etVinNumber.text.isEmpty()) {
-            showAlert(getString(R.string.empty_vin_msg))
+            showAlert(getString(R.string.empty_vin))
             return false
         }
         return true
