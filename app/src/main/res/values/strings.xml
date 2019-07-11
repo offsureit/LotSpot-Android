@@ -130,6 +130,7 @@
     <string name="subscription_msg">Your subscription has been expired. Please purchase subscription for continuing
         parking.
     </string>
+    <string name="update">Update</string>
 
     <!-- Tag Location Map -->
     <string name="text_save">Save</string>
